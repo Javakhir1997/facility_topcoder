@@ -1,57 +1,29 @@
-
-
 import { extractIds, interceptor } from "@app/shared";
 import {
-  IAnnouncementDetail,
   IAnnouncementFileGenerate,
   IAnnouncementForm,
   IAnnouncementList,
   IAttachmentResponse,
-  IConfirmDealFilesForm,
-  IEditDealConfirm,
   IListResponse,
   IOperatorReturnAnnouncementForm,
   IReplyAnnouncementForm,
   IReturnAnnouncementForm,
   ISearchParams,
-  ITenderWinnerAddForm,
   IWinnerAddForm,
 } from "@app/interfaces";
 
 export const DealService = {
-  // getAppeals -> getAnnouncements (lekin appeal endpointga uradi)
-  async getAnnouncements(
-    queryParams: ISearchParams,
-  ) {
-    // Endpointlar APPEAL ga qaytarildi
-    let endpoint = "/deal/list/"; // Default (Applicant)
-
-    // if (isDirector) {
-    //     endpoint = 'tender/director/appeal/list';
-    // } else if (isOperator) {
-    //     endpoint = 'tender/operator/appeal/list';
-    // }
+  async getAnnouncements(queryParams: ISearchParams) {
+    let endpoint = "/deal/list/";
 
     const res = await interceptor<IListResponse<IAnnouncementList>>(endpoint, {
       params: queryParams,
     });
-    console.log(res.data, 'ye deals ')
+    console.log(res.data, "ye deals ");
     return res.data;
   },
 
-  async editDealConfirm(data: IEditDealConfirm, id: string) {
-    console.log(typeof(data.file.id),'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
-    const newdata = {
-      file: data?.file?.id
-    }
-    const res = await interceptor.put(`/deal/${id}/update/`,newdata);
-    console.log(res.data,'yayayayyayaayay')
-    return res.data;
-  },
-
-  // getAppeal -> getAnnouncement
   async getAnnouncement(id: number | string) {
-    // application/{id} ga murojaat qiladi
     const res = await interceptor<any>(`/deal/${id}/detail/`);
     console.log(res.data, "vacacaget deal keldi");
     return res.data;
@@ -60,12 +32,6 @@ export const DealService = {
   // addAppeal -> addAnnouncement
   async addAnnouncement(data: IAnnouncementForm) {
     const res = await interceptor.post("tender", data);
-    return res.data;
-  },
-
-  async addConfirmFilesDeal(data: IConfirmDealFilesForm, deal_id: string) {
-    // data bu yerda oddiy obyekt: { files: ["id1", "id2"] }
-    const res = await interceptor.put(`/deal/${deal_id}/files/upload/`, data);
     return res.data;
   },
   // tender.service.ts
@@ -86,16 +52,11 @@ export const DealService = {
 
     const res = await interceptor.patch(
       `application/tenders/${id}/complete/`,
-      newData // JSON formatida ketadi
+      newData,
     );
 
     return res.data;
   },
-
-
-
-
-
   // appealFileGenerate -> announcementFileGenerate
   async announcementFileGenerate(data: IAnnouncementFileGenerate) {
     const newData = {
@@ -109,7 +70,7 @@ export const DealService = {
     // Endpoint appeal-file-generate bo'lib qoladi
     const res = await interceptor.post<IAttachmentResponse>(
       "tender-file-generate",
-      newData
+      newData,
     );
     return res.data;
   },
@@ -153,7 +114,7 @@ export const DealService = {
     // URL: appeal/operator
     const res = await interceptor.post(
       `tender/operator/${data.responseType}`,
-      newData
+      newData,
     );
     return res.data;
   },
@@ -180,7 +141,7 @@ export const DealService = {
     // URL: appeal/director
     const res = await interceptor.patch(
       `tender/director/${id}/return`,
-      newData
+      newData,
     );
     return res.data;
   },
@@ -188,7 +149,7 @@ export const DealService = {
   // operatorReturnAppeal -> operatorReturnAnnouncement
   async operatorReturnAnnouncement(
     data: IOperatorReturnAnnouncementForm,
-    id: string
+    id: string,
   ) {
     const newData = {
       appeal: id, // DIQQAT: Backend appeal ID kutadi

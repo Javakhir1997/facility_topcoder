@@ -2,203 +2,157 @@ import {
     Button,
     FileUpLoader,
     FileUpLoaderView,
-    FormColumn,
+    FormGrid,
     GridWrapper,
     PageLayout,
     PageTitle,
-    Row,
-    Status,
+    Restricted,
+    Row, ShowIf,
+    Status, Table,
     Tag,
     Wrapper
 } from '@app/components'
-import { BUTTON_THEME, STATUS_LIST } from '@app/shared'
-import { useDealDetail, useConfirmFileDeal } from '@modules/deals/hooks'
+import { BUTTON_THEME, convertDateFormat, formatString, ROLE_LIST, STATUS_LIST } from '@app/shared'
+import HR from '@components/HR'
+import { useDealDetail, useOperatorApprove } from '@modules/deals/hooks'
+import { useAppContext } from '@app/hooks'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
-import { IFIle } from "@app/interfaces";
-import { useMemo } from "react";
-import { useForm, Controller, useFieldArray } from 'react-hook-form'
+// import UseConfirmApplication from "@modules/appeals/hooks/useConfirmApplication.ts";
+import { Link } from "@radix-ui/themes";
+import { Column } from "react-table";
+import { IFIle, IPerformer } from "@app/interfaces";
+import { useEffect, useMemo, useState } from "react";
+import UseConfirmApplication from "@modules/deals/hooks/useConfirmApplication.ts";
+import UseConfirmByPerformerApplication from "@modules/deals/hooks/useConfirmPerformerApplication.ts";
+import UseConfirmByHavzaApplication from "@modules/deals/hooks/useConfirmHavzaApplication.ts";
+import { Modal } from "@components/UI";
+import { Controller } from 'react-hook-form'
+
 
 const Index = () => {
-    const { t } = useTranslation();
+
+    const { data, isPending } = useDealDetail();
+    console.log(data, 'yayayayaya')
+    const { user } = useAppContext();
     const navigate = useNavigate();
-    
-    // 1. Ma'lumotlarni yuklab olish
-    const { data, isPending: isDataLoading } = useDealDetail();
 
-    // 2. Forma sozlamalari
-    const { control, handleSubmit, reset } = useForm({
-        defaultValues: {
-            indebtedness_file: null as any,
-            additional_files: [] as { file: any }[]
-        }
-    });
 
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "additional_files"
-    });
 
-    // 3. Mutation hook (reset funksiyasini uzatamiz)
-    const { addConfirmFilesDeal, isPending: isMutationPending } = useConfirmFileDeal(reset);
 
-    // 4. Submit mantiqi (JSON formatida faqat ID-larni yuborish)
-    const onSubmit = (formData: any) => {
-        const fileIds: string[] = [];
+    const formattedpdf_attachment = useMemo(() => {
+        if (!data?.pdf_attachment) return null;
 
-        // Asosiy fayl ID sini olish
-        if (formData.indebtedness_file?.id) {
-            fileIds.push(formData.indebtedness_file.id);
-        }
+        // URL: .../attachments/Master_Food_8VSdkeI.pdf
+        // "split" orqali oxirgi qismini (fayl nomini) ajratib olamiz
+        const fileName = data?.pdf_attachment.split('/').pop() || "unknown_file.pdf";
 
-        // Qo'shimcha fayllar ID larini olish
-        formData.additional_files?.forEach((item: any) => {
-            if (item.file?.id) {
-                fileIds.push(item.file.id);
-            }
-        });
-
-        // Backend kutyatgan format: { files: ["id1", "id2"] }
-        addConfirmFilesDeal({ files: fileIds } as any);
-    };
-
-    // Fayllarni ko'rinish uchun formatlash
-    const formatFile = (url: string | undefined, id: string) => {
-        if (!url) return null;
-        const fileName = url.split('/').pop() || "file";
+        // Fayl kengaytmasini olamiz (pdf, docx va h.k - icon uchun kerak)
         const extension = fileName.split('.').pop();
-        return { id, name: fileName, url, size: 0, ext: extension, type: extension };
-    };
 
-    const formattedFiles = useMemo(() => ({
-        pdf: formatFile(data?.pdf_attachment, "pdf_id"),
-        docx: formatFile(data?.docx_attachment, "docx_id")
-    }), [data]);
+        return {
+            id: "protocol_unique_id", // Shunchaki unikal ID
+            name: fileName,           // "Master_Food_8VSdkeI.pdf"
+            url: data.pdf_attachment,       // To'liq havola
+            size: 0,                  // DIQQAT: URL dan hajmni bilib bo'lmaydi, shuning uchun 0 yoki yashirib qo'yasiz
+            ext: extension,           // "pdf"
+            type: extension           // Ba'zi komponentlar type kutadi
+        };
+    }, [data?.pdf_attachment]);
 
-    if (isDataLoading) return <PageLayout>Yuklanmoqda...</PageLayout>;
+    const formatteddocx_attachment = useMemo(() => {
+        if (!data?.docx_attachment) return null;
 
-    const safeT = (key: string, fallback: string) => {
-        return typeof key === 'string' && key.length > 0 ? t(key) : fallback;
-    };
+        // URL: .../attachments/Master_Food_8VSdkeI.pdf
+        // "split" orqali oxirgi qismini (fayl nomini) ajratib olamiz
+        const fileName = data?.docx_attachment.split('/').pop() || "unknown_file.pdf";
+
+        // Fayl kengaytmasini olamiz (pdf, docx va h.k - icon uchun kerak)
+        const extension = fileName.split('.').pop();
+
+        return {
+            id: "concept_unique_id", // Shunchaki unikal ID
+            name: fileName,           // "Master_Food_8VSdkeI.pdf"
+            url: data.docx_attachment,       // To'liq havola
+            size: 0,                  // DIQQAT: URL dan hajmni bilib bo'lmaydi, shuning uchun 0 yoki yashirib qo'yasiz
+            ext: extension,           // "pdf"
+            type: extension           // Ba'zi komponentlar type kutadi
+        };
+    }, [data?.docx_attachment]);
+    useEffect(() => {
+
+    }, [data]);
+
+    // const ConfirmApplication = async  () => {
+    // 	confirmApplication()
+    // }
+
+    const { t } = useTranslation();
+
+
+
+    useEffect(() => {
+
+    }, [data]);
+
 
     return (
         <PageLayout>
-            <div className="w-full">
-                <div className="flex justify-between items-center mb--md">
-                    <PageTitle title={`Bitim tafsilotlari #${data?.id || ''}`} />
-                    <Button type="button" theme={BUTTON_THEME.OUTLINE} onClick={() => navigate(-1)}>
-                        {safeT('common.back', 'Orqaga')}
-                    </Button>
-                </div>
+            <PageTitle title="Bitim" />
+            <FormGrid>
+                <Wrapper>
+                    <Tag title="Documents" type="vertical">
+                        <div className="grid grid--cols-3 gap--lg items-center">
 
-                <Wrapper className="mb--lg w-full">
-                    <Tag title="Umumiy ma'lumotlar" type="vertical">
-                        <GridWrapper cols={3} gap="xl" className="py--md">
-                            <Row title="ID"><span className="text--bold">#{data?.id}</span></Row>
-                            <Row title="Ariza raqami"><span>{data?.application || '—'}</span></Row>
-                            <Row title="Holati"><Status statusList={STATUS_LIST} status={data?.status} /></Row>
-                        </GridWrapper>
+                            <div className="">
+                                <span>Deal file pdf</span>
+                                <FileUpLoaderView
+                                    // Endi bu yerga string emas, tayyorlagan obyektimizni beramiz
+
+                                    value={formattedpdf_attachment}
+                                    id="concep_file"
+                                // Agar sizda "view mode" bo'lsa, o'chirish/yuklashni bloklash uchun:
+                                // readonly={true} 
+                                />
+                            </div>
+                            <div className="">
+                                <span>Deal file docx</span>
+                                <FileUpLoaderView
+                                    // Endi bu yerga string emas, tayyorlagan obyektimizni beramiz
+                                    value={formatteddocx_attachment}
+
+                                    id="protocol_file"
+                                // Agar sizda "view mode" bo'lsa, o'chirish/yuklashni bloklash uchun:
+                                // readonly={true} 
+                                />
+                            </div>
+
+                            <Controller
+                                name="indebtedness_file"
+                                control={control}
+                                render={({ field: { value, ref, onChange, onBlur }, fieldState: { error } }) => (
+                                    <FileUpLoader
+                                        id="indebtedness_file"
+                                        ref={ref}
+                                        value={value as unknown as IFIle}
+                                        onBlur={onBlur}
+                                        onChange={onChange}
+                                        label={t('appeals.debt_certificate')}
+                                        error={error?.message}
+                                    />
+                                )}
+                            />
+
+
+
+                        </div>
                     </Tag>
                 </Wrapper>
+            </FormGrid>
 
-                <FormColumn>
-                    <Wrapper className="w-full">
-                        <Tag title="Hujjatlar to'plami" type="vertical">
-                            <div className="flex flex-col gap--lg py--md w-full" style={{ gap: '1.5rem' }}>
 
-                                <div className="flex gap--md">
-                                    <div className="flex-1 p--md border--radius-md bg--light-gray">
-                                        <span className="text--sm font--bold display--block mb--xs">Bitim PDF</span>
-                                        <FileUpLoaderView value={formattedFiles.pdf} id="pdf-v" readonly />
-                                    </div>
-                                    <div className="flex-1 p--md border--radius-md bg--light-gray">
-                                        <span className="text--sm font--bold display--block mb--xs">Bitim Word</span>
-                                        <FileUpLoaderView value={formattedFiles.docx} id="docx-v" readonly />
-                                    </div>
-                                </div>
-
-                                <div className="w-full p--md border--radius-md bg--white border">
-                                    <Controller
-                                        name="indebtedness_file"
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={({ field: { value, ref, onChange, onBlur }, fieldState: { error } }) => (
-                                            <FileUpLoader
-                                                id="indebtedness_file"
-                                                ref={ref}
-                                                value={value as unknown as IFIle}
-                                                onBlur={onBlur}
-                                                onChange={onChange}
-                                                label={safeT('appeals.debt_certificate', "Qarz yo'qligi haqida ma'lumotnoma")}
-                                                error={error?.message}
-                                                className="w-full"
-                                            />
-                                        )}
-                                    />
-                                </div>
-
-                                <div className="flex justify-between items-center mt--md border--top pt--md">
-                                    <span className="text--md font--bold">Qo'shimcha hujjatlar</span>
-                                    <Button
-                                        type="button"
-                                        size="sm"
-                                        theme={BUTTON_THEME.OUTLINE}
-                                        onClick={() => append({ file: null })}
-                                    >
-                                        + Qo'shish
-                                    </Button>
-                                </div>
-
-                                {fields.map((field, index) => (
-                                    <div key={field.id} className="flex gap--md items-end w-full p--md border--radius-md bg--white shadow--sm border">
-                                        <div className="flex-1">
-                                            <Controller
-                                                name={`additional_files.${index}.file`}
-                                                control={control}
-                                                render={({ field: { value, ref, onChange, onBlur }, fieldState: { error } }) => (
-                                                    <FileUpLoader
-                                                        id={`file_${index}`}
-                                                        ref={ref}
-                                                        value={value as unknown as IFIle}
-                                                        onBlur={onBlur}
-                                                        onChange={onChange}
-                                                        label={`Hujjat #${index + 1}`}
-                                                        error={error?.message}
-                                                    />
-                                                )}
-                                            />
-                                        </div>
-                                        <Button
-                                            type="button"
-                                            theme={BUTTON_THEME.DANGER_OUTLINE}
-                                            onClick={() => remove(index)}
-                                            icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>}
-                                            style={{ height: '42px', marginBottom: '4px' }}
-                                        >
-                                            {/* Faqat string bo'lishi kerak tarjima xatosi bermasligi uchun */}
-                                            {String(t('common.delete') || 'Ochirish')}
-                                        </Button>
-                                    </div>
-                                ))}
-                            </div>
-                        </Tag>
-
-                        <div className="flex justify-end mt--xl pb--xl">
-                            <Button
-                                theme={BUTTON_THEME.PRIMARY}
-                                size="lg"
-                                // Loading warningni oldini olish
-                                loading={isMutationPending ? true : undefined}
-                                onClick={handleSubmit(onSubmit)}
-                            >
-                                Saqlash va Tasdiqlash
-                            </Button>
-                        </div>
-                    </Wrapper>
-                </FormColumn>
-            </div>
         </PageLayout>
     )
 }
 
-export default Index;
+export default Index

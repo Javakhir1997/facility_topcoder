@@ -10,10 +10,6 @@ interface IWinnerAddForm {
     vice_winner:string,
     protocol: IFIle,
 }
-
-interface IEditDealConfirm {
-	file:IFIle
-}
 interface IAppealForm {
 	lastName: string;
 	firstName: string;
@@ -35,10 +31,6 @@ interface IAppealForm {
 	files: IFIle[];
 }
 
-
-interface IConfirmDealFilesForm {
-	files: IFIle[];
-}
 interface IReplyAppealForm {
 	responseType: string;
 	// responseDate: string;
@@ -181,7 +173,5 @@ export type {
 	IAddElectricity,
 	IAddElectricityReportForm,
 	IConfirmApplicationForm,
-	IWinnerAddForm,
-	IConfirmDealFilesForm,
-	IEditDealConfirm
+	IWinnerAddForm
 }

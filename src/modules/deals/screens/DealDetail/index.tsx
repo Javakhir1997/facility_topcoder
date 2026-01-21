@@ -1,123 +1,135 @@
 import {
+	Button,
+	FileUpLoader,
 	FileUpLoaderView,
+	GridWrapper,
 	PageLayout,
 	PageTitle,
-	Status,
+	Restricted,
+	Row, ShowIf,
+	Status, Table,
 	Tag,
-	Wrapper,
-	GridWrapper,
-	Row,
-	Button,
-	Restricted
+	Wrapper
 } from '@app/components'
-import { convertDateFormat, STATUS_LIST, BUTTON_THEME, ROLE_LIST } from '@app/shared'
-import { useDealDetail } from '@modules/deals/hooks'
+import { BUTTON_THEME, convertDateFormat, formatString, ROLE_LIST, STATUS_LIST } from '@app/shared'
+import HR from '@components/HR'
+import { useDealDetail, useOperatorApprove } from '@modules/deals/hooks'
+import { useAppContext } from '@app/hooks'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { useNavigate } from 'react-router-dom';
+// import UseConfirmApplication from "@modules/appeals/hooks/useConfirmApplication.ts";
+import { Link } from "@radix-ui/themes";
+import { Column } from "react-table";
+import { IPerformer } from "@app/interfaces";
+import { useEffect, useMemo, useState } from "react";
+import UseConfirmApplication from "@modules/deals/hooks/useConfirmApplication.ts";
+import UseConfirmByPerformerApplication from "@modules/deals/hooks/useConfirmPerformerApplication.ts";
+import UseConfirmByHavzaApplication from "@modules/deals/hooks/useConfirmHavzaApplication.ts";
+import { Modal } from "@components/UI";
 
-// ... (importlar o'sha holatda qoladi)
 
 const Index = () => {
+
 	const { data, isPending } = useDealDetail();
+	console.log(data, 'yayayayaya')
+	const { user } = useAppContext();
 	const navigate = useNavigate();
-	const formatFile = (url: string | undefined, id: string) => {
-		// 1. Agar URL kelmasa (null yoki undefined bo'lsa), hech narsa qaytarmaydi
-		if (!url) return null;
 
-		// 2. Fayl nomini URL ichidan ajratib oladi
-		// Masalan: "http://site.uz/media/deal_87.pdf" -> "deal_87.pdf"
-		const fileName = url.split('/').pop() || "file";
 
-		// 3. Fayl kengaytmasini (ext) aniqlaydi
-		// Masalan: "deal_87.pdf" -> "pdf"
+
+
+	const formattedpdf_attachment = useMemo(() => {
+		if (!data?.pdf_attachment) return null;
+
+		// URL: .../attachments/Master_Food_8VSdkeI.pdf
+		// "split" orqali oxirgi qismini (fayl nomini) ajratib olamiz
+		const fileName = data?.pdf_attachment.split('/').pop() || "unknown_file.pdf";
+
+		// Fayl kengaytmasini olamiz (pdf, docx va h.k - icon uchun kerak)
 		const extension = fileName.split('.').pop();
 
-		// 4. Komponent kutayotgan tayyor obyektni qaytaradi
 		return {
-			id: id,            // Biz bergan unikal ID
-			name: fileName,    // Fayl nomi
-			url: url,          // Yuklab olish uchun to'liq yo'l
-			size: 0,           // Hajmi (URL dan bilib bo'lmaydi, shunchaki 0)
-			ext: extension,    // Kengaytma (pdf, docx)
-			type: extension    // Fayl turi
+			id: "protocol_unique_id", // Shunchaki unikal ID
+			name: fileName,           // "Master_Food_8VSdkeI.pdf"
+			url: data.pdf_attachment,       // To'liq havola
+			size: 0,                  // DIQQAT: URL dan hajmni bilib bo'lmaydi, shuning uchun 0 yoki yashirib qo'yasiz
+			ext: extension,           // "pdf"
+			type: extension           // Ba'zi komponentlar type kutadi
 		};
-	};
-	// Fayl formatlash memoizatsiya qilingan
-	const formattedFiles = useMemo(() => ({
-		pdf: data?.pdf_attachment ? formatFile(data.pdf_attachment, "pdf_id") : null,
-		docx: data?.docx_attachment ? formatFile(data.docx_attachment, "docx_id") : null
-	}), [data]);
+	}, [data?.pdf_attachment]);
 
-	if (isPending) return <PageLayout>Yuklanmoqda...</PageLayout>;
+	const formatteddocx_attachment = useMemo(() => {
+		if (!data?.docx_attachment) return null;
 
-	// Ma'lumot topilmasa xunuk ko'rinmasligi uchun
-	if (!data) return (
-		<PageLayout>
-			<Wrapper>Ma'lumot topilmadi</Wrapper>
-		</PageLayout>
-	);
+		// URL: .../attachments/Master_Food_8VSdkeI.pdf
+		// "split" orqali oxirgi qismini (fayl nomini) ajratib olamiz
+		const fileName = data?.docx_attachment.split('/').pop() || "unknown_file.pdf";
+
+		// Fayl kengaytmasini olamiz (pdf, docx va h.k - icon uchun kerak)
+		const extension = fileName.split('.').pop();
+
+		return {
+			id: "concept_unique_id", // Shunchaki unikal ID
+			name: fileName,           // "Master_Food_8VSdkeI.pdf"
+			url: data.docx_attachment,       // To'liq havola
+			size: 0,                  // DIQQAT: URL dan hajmni bilib bo'lmaydi, shuning uchun 0 yoki yashirib qo'yasiz
+			ext: extension,           // "pdf"
+			type: extension           // Ba'zi komponentlar type kutadi
+		};
+	}, [data?.docx_attachment]);
+	useEffect(() => {
+
+	}, [data]);
+
+	// const ConfirmApplication = async  () => {
+	// 	confirmApplication()
+	// }
+
+	const { t } = useTranslation();
+
+
+
+	useEffect(() => {
+
+	}, [data]);
+
 
 	return (
 		<PageLayout>
-			<div className="flex justify-between items-center mb--md">
-				<PageTitle title={`Bitim #${data.id}`} />
-				<div className="flex gap--sm">
-					<Button
-						theme={BUTTON_THEME.OUTLINE}
-						onClick={() => navigate(-1)}
-					>
-						Orqaga
-					</Button>
-					<Restricted to={[ROLE_LIST.OPERATOR]}> {/* Huquqni tekshirish */}
-						<Button
-							theme={BUTTON_THEME.PRIMARY}
-							onClick={() => navigate(`/deals/edit/${data.id}`)}
-						>
-							Tahrirlash
-						</Button>
-					</Restricted>
-				</div>
-			</div>
-
-			<Wrapper className="mb--lg">
-				<Tag title="Umumiy ma'lumotlar" type="vertical">
-					<GridWrapper cols={3} gap="xl" className="py--md">
-						<Row title="ID raqami">
-							<span className="text--bold text--primary">#{data.id}</span>
-						</Row>
-						<Row title="Ariza raqami">
-							<span className="text--medium">{data.application}</span>
-						</Row>
-						<Row title="Hozirgi holat">
-							<Status statusList={STATUS_LIST} status={data.status} />
-						</Row>
-						<Row title="Boshlanish sanasi">
-							<span>{data.start_date ? convertDateFormat(data.start_date) : "—"}</span>
-						</Row>
-						<Row title="Tugash sanasi">
-							<span className={data.end_date ? "text--danger" : ""}>
-								{data.end_date ? convertDateFormat(data.end_date) : "—"}
-							</span>
-						</Row>
-					</GridWrapper>
-				</Tag>
-			</Wrapper>
-
+			<PageTitle title="Bitim" />
 			<Wrapper>
-				<Tag title="Hujjatlar" type="vertical">
-					<div className="grid grid--cols-2 gap--xl">
-						<div className="p--md border--radius-md bg--light-gray">
-							<span className="display--block mb--sm text--muted">PDF Varianti</span>
-							<FileUpLoaderView value={formattedFiles.pdf} id="pdf" readonly />
+				<Tag title="Documents" type="vertical">
+					<div className="grid grid--cols-3 gap--lg items-center">
+
+						<div className="">
+							<span>Deal file pdf</span>
+							<FileUpLoaderView
+								// Endi bu yerga string emas, tayyorlagan obyektimizni beramiz
+
+								value={formattedpdf_attachment}
+								id="concep_file"
+							// Agar sizda "view mode" bo'lsa, o'chirish/yuklashni bloklash uchun:
+							// readonly={true} 
+							/>
 						</div>
-						<div className="p--md border--radius-md bg--light-gray">
-							<span className="display--block mb--sm text--muted">Word Varianti</span>
-							<FileUpLoaderView value={formattedFiles.docx} id="docx" readonly />
+						<div className="">
+							<span>Deal file docx</span>
+							<FileUpLoaderView
+								// Endi bu yerga string emas, tayyorlagan obyektimizni beramiz
+								value={formatteddocx_attachment}
+
+								id="protocol_file"
+							// Agar sizda "view mode" bo'lsa, o'chirish/yuklashni bloklash uchun:
+							// readonly={true} 
+							/>
 						</div>
+						
+
 					</div>
 				</Tag>
 			</Wrapper>
+
+
 		</PageLayout>
 	)
 }

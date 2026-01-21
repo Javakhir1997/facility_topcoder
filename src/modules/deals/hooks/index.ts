@@ -1,6 +1,4 @@
 export {default as useDeals} from "./useDeals"
-export {default as useConfirmFileDeal} from "./useAddComfirmFileDeal"
-export {default as useEditDealFile} from "./useEditDealFile"
 export {default as useAddAppeal} from "./useAddAppeal"
 export {default as useDealDetail} from "./useDealDetail"
 export {default as useReply} from "./useReply"

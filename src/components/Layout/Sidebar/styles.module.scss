@@ -1,5 +1,5 @@
 .sidebar {
-  background: var(--color-gradient-primary);
+  background: #005ae6;
   max-height: 100vh;
   height: 100vh;
   display: flex;
@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: .5rem;
+    gap: 0.5rem;
     padding: 0.8rem 0;
 
     img {
@@ -34,16 +34,15 @@
     width: 100%;
     height: 0.0625rem;
     opacity: 0.3;
-    background: #FFF;
+    background: #fff;
   }
 
   .menu {
     display: flex;
     flex-direction: column;
-    gap: .38rem;
+    gap: 0.38rem;
     flex: 1;
   }
-
 
   .logout {
     display: flex;
@@ -54,7 +53,7 @@
     padding: 1rem;
     border-radius: 1rem;
     text-decoration: none;
-    background: var(--color-red-light-1);
+    background: #f04141;
 
     .title {
       font-family: "Inter-Medium", sans-serif;
@@ -62,7 +61,7 @@
       font-style: normal;
       font-weight: 500;
       line-height: 116%; /* 1.16rem */
-      color: var(--color-red-1);
+      color: var(--color-white);
       transition: color 0.1s ease-in;
     }
   }
