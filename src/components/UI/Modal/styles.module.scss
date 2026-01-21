@@ -1,0 +1,34 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+  padding-bottom: 1rem; /* 1.5rem * 1.6 */
+
+  .times {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    button {
+      background: #FFFFFF;
+      border: 1px solid #EAEAEA;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem; /* 1rem * 1.6 */
+      cursor: pointer;
+      border-radius: 50%;
+    }
+  }
+
+  .title {
+    font-family: 'Inter-SemiBold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.8rem; /* 1.8rem * 1.6 */
+    line-height: 140%;
+    color: #000000;
+    text-align: center;
+  }
+}

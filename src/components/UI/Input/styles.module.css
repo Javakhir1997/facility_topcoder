@@ -1,0 +1,116 @@
+.root {
+  position: relative;
+}
+.root.error input[data-title=input],
+.root.error textarea {
+  border: 1px solid var(--color-red-1);
+  box-shadow: 0 0 0 1px var(--color-red-1);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+.wrapper label {
+  color: var(--color-gray-6);
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 1rem;
+  line-height: 1.015rem;
+  font-weight: 400;
+  margin-bottom: 0.2rem;
+}
+.wrapper .required {
+  color: var(--color-red-1);
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
+
+.input,
+textarea {
+  width: 100%;
+  padding: 0.5rem 1.2rem;
+  border-radius: 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-light-1);
+  outline: none;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 2rem;
+  color: var(--color-gray-2);
+  letter-spacing: 0.02rem;
+  font-feature-settings: "salt" on, "liga" off;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.input::-moz-placeholder, textarea::-moz-placeholder {
+  color: var(--color-gray-6);
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 2rem;
+  -moz-user-select: none;
+       user-select: none;
+}
+.input::placeholder,
+textarea::placeholder {
+  color: var(--color-gray-6);
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 2rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.input:focus,
+textarea:focus {
+  border-color: var(--color-blue-2);
+  box-shadow: 0 0 0 1px var(--color-blue-2);
+}
+
+textarea {
+  border-radius: 0.5rem;
+  resize: none;
+}
+
+.error__message {
+  display: inline-block;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1rem;
+  color: var(--color-red-1);
+  margin-top: 0.3rem;
+}
+
+.icon .input-wrapper {
+  position: relative;
+}
+.icon .input-wrapper .input {
+  padding: 0.5rem 1rem 0.5rem 2.8rem;
+}
+.icon .input-wrapper .icon-wrapper {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  padding: 0.4rem;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.icon .right .input {
+  padding: 0.5rem 2.8rem 0.5rem 1rem;
+}
+.icon .right .icon-wrapper {
+  right: 0.8rem;
+  left: auto;
+}/*# sourceMappingURL=styles.module.css.map */

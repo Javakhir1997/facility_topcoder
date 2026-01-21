@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: var(--color-white, #FFF);
+
+  .title {
+    color: var(--color-gray-2, #1D1929);
+    font-family: "Inter-Bold", sans-serif;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 135%; /* 1.51875rem */
+    letter-spacing: 0.01125rem;
+  }
+}
+
+.screen {
+  flex: 1;
+}
+
+.padding {
+  padding: 0;
+}

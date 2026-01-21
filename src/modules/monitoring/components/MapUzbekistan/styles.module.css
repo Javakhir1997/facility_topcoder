@@ -1,0 +1,13 @@
+.root path {
+  cursor: pointer;
+}
+.root path:hover {
+  fill: #809EFF !important;
+  stroke: #809EFF !important;
+}
+.root .active {
+  fill: #809EFF !important;
+  stroke: #809EFF !important;
+}
+
+/*# sourceMappingURL=styles.module.css.map */

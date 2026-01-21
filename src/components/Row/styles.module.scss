@@ -1,0 +1,28 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  padding: 1rem 0.75rem;
+
+  .label {
+    color: var(--color-gray-5, #8E8C94);
+    font-family: "Golos-SemiBold", sans-serif;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 147%; /* 1.47rem */
+  }
+
+  .value {
+    color: var(--color-gray-1, #0F0D15);
+    font-family: "Golos-Medium", sans-serif;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 116%; /* 1.16rem */
+  }
+}
+
+.background {
+  background: var(--color-gray-light-2, #F9F9F9);
+}

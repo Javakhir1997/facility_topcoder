@@ -1,0 +1,15 @@
+.root {
+  path {
+    cursor: pointer;
+
+    &:hover {
+      fill: #809EFF !important;
+      stroke: #809EFF !important;
+    }
+  }
+
+  .active {
+    fill: #809EFF !important;
+    stroke: #809EFF !important;
+  }
+}

@@ -1,0 +1,267 @@
+.ht_clone_top .wtHider,
+.handsontable table,
+.ht_master .wtHider,
+.wtSpreader {
+  width: 100% !important;
+}
+
+:root {
+  --loader-size: 5rem;
+  --color-gray-1: #0F0D15; /* Gray-1 */
+  --color-gray-2: #1D1929; /* Gray-2 */
+  --color-gray-3: #34303E; /* Gray-3 */
+  --color-gray-4: #615E69; /* Gray-5 */
+  --color-gray-5: #8E8C94; /* Gray-7 */
+  --color-gray-6: #A5A3A9; /* Gray-8 */
+  --color-gray-7: #A1A1A1; /* Gray-6 */
+  --color-gray-light-1: #E8E8EA; /* Gray-11 */
+  --color-gray-light-2: #F9F9F9; /* Gray-12 */
+  --color-gray-light-3: #F0F0F0; /* Gray-Light */
+  --color-white: #FFF; /* Base-White */
+  --color-blue-1: #003CFF; /* Blue-3 */
+  --color-blue-2: #3363FF; /* Blue-5 */
+  --color-blue-light-1: #CCD8FF; /* Blue-11 */
+  --color-blue-light-2: #E6ECFF; /* Blue-12 */
+  --color-green-1: #18BA92; /* Green-1 */
+  --color-green-2: #1BD2A4; /* Green-2 */
+  --color-green-light-1: #D2FBF0; /* Green-11 */
+  --color-red-1: #F42829; /* Red-3 */
+  --color-red-light-1: #FDD4D4; /* Red-11 */
+  --color-orange-1: #FF6E01; /* Orange-3 */
+  --color-orange-light-1: #FFE2CC; /* Orange-11 */
+  --color-yellow-1: #CCB243; /* Yellow-1 */
+  --color-yellow-light-1: #FFF8DD; /* Yellow-11 */
+  --color-gradient-primary: linear-gradient(180deg, #1FA3F1 0%, #194ED4 100%); /* Gradient Primary */
+}
+
+@font-face {
+  font-family: "Inter-Regular";
+  src: url("../assets/fonts/Inter/Inter-Regular.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Regular.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter-Medium";
+  src: url("../assets/fonts/Inter/Inter-Medium.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Medium.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter-SemiBold";
+  src: url("../assets/fonts/Inter/Inter-SemiBold.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-SemiBold.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter-Bold";
+  src: url("../assets/fonts/Inter/Inter-Bold.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Bold.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Golos-Regular";
+  src: url("../assets/fonts/Golos/Golos-Regular.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Golos-Medium";
+  src: url("../assets/fonts/Golos/Golos-Medium.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Golos-SemiBold";
+  src: url("../assets/fonts/Golos/Golos-SemiBold.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Golos-Bold";
+  src: url("../assets/fonts/Golos/Golos-Bold.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* Global Reset */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.3rem;
+  height: 0.3rem;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 0.8rem;
+  background-color: silver;
+}
+
+*::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* HTML */
+html {
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  background: #F0F0F0;
+}
+
+/* Images */
+img {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Lists */
+ul,
+ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.items-center {
+  align-items: center !important;
+}
+
+.justify-end {
+  justify-content: flex-end !important;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.justify-between {
+  justify-content: space-between !important;
+}
+
+.flex-1 {
+  flex: 1 !important;
+}
+
+.grid {
+  display: grid !important;
+}
+
+.grid--cols-2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.grid--cols-3 {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.grid--cols-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+.gap--sm {
+  gap: 0.5rem !important;
+}
+.gap--md {
+  gap: 0.75rem !important;
+}
+.gap--lg {
+  gap: 1rem !important;
+}
+.gap--xl {
+  gap: 1.25rem !important;
+}
+.gap--2xl {
+  gap: 1.5rem !important;
+}
+.gap--3xl {
+  gap: 2rem !important;
+}
+.gap--4xl {
+  gap: 2.5rem !important;
+}
+.gap--5xl {
+  gap: 3rem !important;
+}
+
+.col-span--1 {
+  grid-column-end: span 2 !important;
+}
+
+.col-span--2 {
+  grid-column-end: span 3 !important;
+}
+
+.grid-row--2 {
+  grid-row: 2 !important;
+}
+
+.grid-row--3 {
+  grid-row: 3 !important;
+}
+
+.grid-row--4 {
+  grid-row: 4 !important;
+}
+
+.grid-row--5 {
+  grid-row: 5 !important;
+}
+
+.grid-row--6 {
+  grid-row: 6 !important;
+}
+
+.grid-row--7 {
+  grid-row: 7 !important;
+}
+
+.grid-row--8 {
+  grid-row: 8 !important;
+}
+
+.grid-row--9 {
+  grid-row: 9 !important;
+}
+
+.grid-row--10 {
+  grid-row: 10 !important;
+}
+
+.grid-row--25 {
+  grid-row: 25 !important;
+}
+
+.w-full {
+  width: 100% !important;
+}/*# sourceMappingURL=main.css.map */

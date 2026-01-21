@@ -1,0 +1,62 @@
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: background 0.1s ease-in;
+
+  .title {
+    font-family: "Inter-Medium", sans-serif;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 116%; /* 1.16rem */
+    color: var(--color-white);
+    transition: color 0.1s ease-in;
+  }
+
+  .icon {
+    svg {
+      path {
+        fill: var(--color-white);
+        transition: fill 0.1s ease-in;
+      }
+    }
+  }
+
+  &:hover {
+    background: var(--color-blue-light-2);
+
+    .title {
+      color: var(--color-blue-2);
+    }
+
+    .icon {
+      svg {
+        path {
+          fill: var(--color-blue-2);
+        }
+      }
+    }
+
+  }
+}
+
+
+.active {
+  background: var(--color-blue-light-2);
+
+  .icon {
+    svg {
+      path {
+        fill: var(--color-blue-2);
+      }
+    }
+  }
+
+  .title {
+    color: var(--color-blue-2);
+  }
+}

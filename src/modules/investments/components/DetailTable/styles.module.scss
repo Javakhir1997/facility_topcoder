@@ -1,0 +1,59 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  gap: .4rem;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--color-gray-2, #1D1929);
+  font-feature-settings: 'salt' on, 'liga' off;
+  font-family: "Golos-Bold", sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 1.5rem */
+  span {
+    color: var(--color-gray-5, #8E8C94);
+    text-align: center;
+    font-feature-settings: 'salt' on, 'liga' off;
+    font-family: "Golos-Regular", sans-serif;
+    font-size: .95rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 0.975rem */
+    letter-spacing: 0.0225rem;
+  }
+}
+
+.bold {
+  color: var(--color-gray-1, #0F0D15);
+  font-feature-settings: 'salt' on, 'liga' off;
+  font-family: "Golos-SemiBold", sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  margin-left: 2rem;
+  font-weight: 600;
+  line-height: 150%; /* 1.5rem */
+}
+
+.common {
+  color: var(--color-gray-4, #615E69);
+  font-feature-settings: 'salt' on, 'liga' off;
+  font-family: "Golos-Regular", sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  margin-left: 3rem;
+  line-height: 150%; /* 1.5rem */
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    path {
+      stroke: var(--color-white);
+    }
+  }
+}

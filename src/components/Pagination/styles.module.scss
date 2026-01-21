@@ -1,0 +1,78 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+
+  p {
+    color: var(--color-gray-6);
+    text-align: center;
+    font-family: "Golos-Regular", sans-serif;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 0.975rem */
+    letter-spacing: 0.0225rem;
+  }
+
+  ul {
+    display: flex;
+    gap: .4rem;
+    user-select: none;
+
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        cursor: pointer;
+        color: var(--color-gray-3);
+        padding: .25rem 0.8rem;
+        text-align: center;
+        font-family: "Golos-Medium", sans-serif;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        letter-spacing: 0.03rem;
+        transition: color 0.15s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+          color: var(--color-blue-1);
+        }
+      }
+    }
+
+    li[class="selected"] {
+      a {
+        cursor: not-allowed;
+        pointer-events: none;
+        color: var(--color-blue-1);
+      }
+    }
+
+    li[class="previous disabled"],
+    li[class="next disabled"] {
+      a {
+        cursor: not-allowed;
+        pointer-events: none;
+
+        svg {
+          path {
+            stroke: silver;
+          }
+        }
+      }
+    }
+  }
+
+  .size {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+}

@@ -1,0 +1,28 @@
+.root {
+  border-radius: 0.75rem;
+  background: var(--color-gray-light-2);
+  display: inline-flex;
+  flex-direction: row;
+  gap: .5rem;
+
+  .item {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    color: var(--color-gray-2);
+    text-align: center;
+    font-feature-settings: 'salt' on, 'liga' off;
+    font-family: 'Inter-Medium', sans-serif;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 112%; /* 1.568rem */
+    letter-spacing: 0.0175rem;
+    min-width: 10rem;
+    cursor: pointer;
+  }
+
+  .active {
+    background: var(--color-blue-1);
+    color: white;
+  }
+}

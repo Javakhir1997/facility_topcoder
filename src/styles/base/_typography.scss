@@ -1,0 +1,77 @@
+// Inter
+@font-face {
+  font-family: "Inter-Regular";
+  src: url("../assets/fonts/Inter/Inter-Regular.ttf") format("truetype"),
+  url("../assets/fonts/Inter/Inter-Regular.woff2") format("woff2"),
+  url("../assets/fonts/Inter/Inter-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter-Medium";
+  src: url("../assets/fonts/Inter/Inter-Medium.ttf") format("truetype"),
+  url("../assets/fonts/Inter/Inter-Medium.woff2") format("woff2"),
+  url("../assets/fonts/Inter/Inter-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter-SemiBold";
+  src: url("../assets/fonts/Inter/Inter-SemiBold.ttf") format("truetype"),
+  url("../assets/fonts/Inter/Inter-SemiBold.woff2") format("woff2"),
+  url("../assets/fonts/Inter/Inter-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter-Bold";
+  src: url("../assets/fonts/Inter/Inter-Bold.ttf") format("truetype"),
+  url("../assets/fonts/Inter/Inter-Bold.woff2") format("woff2"),
+  url("../assets/fonts/Inter/Inter-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// GText
+@font-face {
+  font-family: "Golos-Regular";
+  src: url("../assets/fonts/Golos/Golos-Regular.ttf") format("truetype"),
+  url("../assets/fonts/Golos/Golos-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Golos-Medium";
+  src: url("../assets/fonts/Golos/Golos-Medium.ttf") format("truetype"),
+  url("../assets/fonts/Golos/Golos-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Golos-SemiBold";
+  src: url("../assets/fonts/Golos/Golos-SemiBold.ttf") format("truetype"),
+  url("../assets/fonts/Golos/Golos-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Golos-Bold";
+  src: url("../assets/fonts/Golos/Golos-Bold.ttf") format("truetype"),
+  url("../assets/fonts/Golos/Golos-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

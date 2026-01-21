@@ -1,0 +1,8 @@
+.root {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  border: 1px solid var(--Gray-11, #E8E8EA);
+  height: 100%;
+}

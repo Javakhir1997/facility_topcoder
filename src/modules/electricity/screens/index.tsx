@@ -1,0 +1,6 @@
+export {default as ElectricityObjectsList} from "./ObjectsList"
+export {default as ElectricityAddPlan} from "./AddPlan"
+export {default as ElectricityObjectDetail} from "./ObjectDetail"
+export {default as ElectricityAddReport} from "./AddReport"
+export {default as ElectricityReportReturn} from "./ReportReturn"
+export {default as ElectricityReportDetail} from "./ReportDetail"

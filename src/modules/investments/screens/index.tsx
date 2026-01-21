@@ -1,0 +1,6 @@
+export {default as InvestmentList} from "./InvestmentList"
+export {default as AddInvestment} from "./AddInvestment"
+export {default as InvestmentDetail} from "./InvestmentDetail"
+export {default as AddReport} from "./AddReport"
+export {default as ReportReturn} from "./ReportReturn"
+export {default as ReportDetail} from "./ReportDetail"

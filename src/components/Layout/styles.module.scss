@@ -1,0 +1,23 @@
+.root {
+  display: grid;
+  grid-template-columns: 20rem 1fr;
+  position: relative;
+  background-color: #F0F0F0;
+
+  .main {
+    padding: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-height: 100vh;
+    overflow-y: auto;
+
+    .wrapper {
+      margin-top: 6.375rem;
+      flex: 1;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
