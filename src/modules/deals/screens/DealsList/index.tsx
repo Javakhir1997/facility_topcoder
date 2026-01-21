@@ -7,7 +7,7 @@ import {
     Tab,
     Table
 } from '@app/components'
-import { BUTTON_THEME, convertDateFormat, ROLE_LIST, statusTabOptions } from '@app/shared'
+import { convertDateFormat, ROLE_LIST, statusTabOptions } from '@app/shared'
 import { Add } from '@app/assets'
 import { Column } from 'react-table'
 import { useMemo } from 'react'
@@ -33,9 +33,9 @@ const Index = () => {
     const { t } = useTranslation()
     // DIQQAT: useAppeals o'rniga useDeals yoki shunga o'xshash, yangi JSON ni qaytaradigan hook ishlatilishi kerak
     // Hozircha o'zgaruvchi nomlarini "deals" deb oldim
-    const { deals, isPending, total, totalPages, currentPage } = useDeals()
-    console.log(deals, 'ssdsdsdsdd')
-
+    const { deals, isPending, total, totalPages, currentPage } = useDeals() 
+    console.log(deals,'ssdsdsdsdd')
+    
     const navigate = useNavigate()
     const { user } = useAppContext()
 
@@ -63,38 +63,34 @@ const Index = () => {
                 accessor: (row) => (<Status status={row.status} />)
             },
             {
-                Header: t('Actions'),
-                id: 'actions', // accessor ishlatilmaganda id bo'lishi shart
-                width: 80,
+                Header: t('Documents'), // Hujjatlar
                 Cell: ({ row }) => (
-                    <div className="flex justify-center">
-                        <Button
-                            type="button"
-                            theme={BUTTON_THEME.OUTLINE}
-                            size="sm"
-                            onClick={(e) => {
-                                e.stopPropagation(); // Qator (row) bosilishini to'xtatamiz
-                                navigate(`/deals/${row.original.id}/edit`); // Siz yaratgan confirm sahifasiga yo'l
-                            }}
-                            icon={
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                            }
-                        >
-                            {/* Faqat ikonka qoldirishingiz yoki matn qo'shishingiz mumkin */}
-                            {/* {t('common.edit')} */}
-                        </Button>
+                    <div className="flex gap-2">
+                        {row.original.pdf_attachment && (
+                            <a 
+                                href={row.original.pdf_attachment} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="text-red-600 hover:underline font-medium text-sm"
+                                onClick={(e) => e.stopPropagation()} // Qator bosilishini to'xtatish uchun
+                            >
+                                PDF
+                            </a>
+                        )}
+                        {row.original.docx_attachment && (
+                            <a 
+                                href={row.original.docx_attachment} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="text-blue-600 hover:underline font-medium text-sm"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                DOCX
+                            </a>
+                        )}
+                        {!row.original.pdf_attachment && !row.original.docx_attachment && (
+                            <span className="text-gray-400 text-sm">-</span>
+                        )}
                     </div>
                 )
             }
@@ -103,7 +99,7 @@ const Index = () => {
 
     const handleRow = (id: string | number): void => {
         // Bu yerni o'zingizning yangi route ga moslang (masalan: /deals/3)
-        navigate(`/deals/${id}`)
+        navigate(`/deals/${id}`) 
     }
 
     return (
@@ -118,12 +114,12 @@ const Index = () => {
                     </Button>
                 </Restricted>
             </PageTitle>
-
+            
             {/* Agar filtrlar kerak bo'lsa qoldiring, bo'lmasa o'chiring */}
-            {/* <AppealListFilter /> */}
-
+            {/* <AppealListFilter /> */} 
+            
             <Tab tabs={statusTabOptions} query="status" fallbackValue="all" />
-
+            
             <Table
                 total={total}
                 currentPage={currentPage}

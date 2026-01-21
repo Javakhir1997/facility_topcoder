@@ -1,6 +1,5 @@
 export {default as DealsList} from './DealsList'
 export {default as AddDeal} from './AddDeal'
-export {default as EditDetailDeal} from './EditDetailDeal'
 export {default as DealDetail} from './DealDetail'
 export {default as DealConfirmFile} from './DealConfirmFile'
 export {default as ReplyDeal} from './ReplyDeal'

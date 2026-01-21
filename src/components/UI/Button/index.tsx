@@ -18,9 +18,6 @@ const Index: React.FC<IButton> = ({
   className,
   ...props
 }) => {
-
-  console.log(disabled)
-
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -44,7 +41,7 @@ const Index: React.FC<IButton> = ({
         },
         { [styles[`button--outline`]]: theme === BUTTON_THEME.OUTLINE },
         { [styles[`button--warning`]]: theme === BUTTON_THEME.WARNING },
-        { [styles[`button--green`]]: theme === BUTTON_THEME.GREEN }
+        { [styles[`button--green`]]: theme === BUTTON_THEME.GREEN },
       )}
       disabled={disabled}
       onClick={() => !!redirect && navigate(redirect)}
@@ -54,7 +51,7 @@ const Index: React.FC<IButton> = ({
         <span
           className={classNames(
             styles[`button__icon`],
-            styles[`button__icon--${iconPosition}`]
+            styles[`button__icon--${iconPosition}`],
           )}
         >
           {icon}

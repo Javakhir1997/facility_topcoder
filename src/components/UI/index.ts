@@ -5,7 +5,5 @@ export { default as Switch } from "./Switch";
 export { default as MaskInput } from "./MaskInput";
 export { default as FileUpLoader } from "./FileUpLoader";
 export { default as FileUpLoader2 } from "./FileUpLoader2";
-export { default as FileUpLoaderDoc } from "./FileUploaderDoc";
-
 export { default as NumberFormattedInput } from "./NumberFormattedInput";
 export { default as Modal } from "./Modal";

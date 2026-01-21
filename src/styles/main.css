@@ -7,85 +7,110 @@
 
 :root {
   --loader-size: 5rem;
-  --color-gray-1: #0F0D15; /* Gray-1 */
-  --color-gray-2: #1D1929; /* Gray-2 */
-  --color-gray-3: #34303E; /* Gray-3 */
-  --color-gray-4: #615E69; /* Gray-5 */
-  --color-gray-5: #8E8C94; /* Gray-7 */
-  --color-gray-6: #A5A3A9; /* Gray-8 */
-  --color-gray-7: #A1A1A1; /* Gray-6 */
-  --color-gray-light-1: #E8E8EA; /* Gray-11 */
-  --color-gray-light-2: #F9F9F9; /* Gray-12 */
-  --color-gray-light-3: #F0F0F0; /* Gray-Light */
-  --color-white: #FFF; /* Base-White */
-  --color-blue-1: #003CFF; /* Blue-3 */
-  --color-blue-2: #3363FF; /* Blue-5 */
-  --color-blue-light-1: #CCD8FF; /* Blue-11 */
-  --color-blue-light-2: #E6ECFF; /* Blue-12 */
-  --color-green-1: #18BA92; /* Green-1 */
-  --color-green-2: #1BD2A4; /* Green-2 */
-  --color-green-light-1: #D2FBF0; /* Green-11 */
-  --color-red-1: #F42829; /* Red-3 */
-  --color-red-light-1: #FDD4D4; /* Red-11 */
-  --color-orange-1: #FF6E01; /* Orange-3 */
-  --color-orange-light-1: #FFE2CC; /* Orange-11 */
-  --color-yellow-1: #CCB243; /* Yellow-1 */
-  --color-yellow-light-1: #FFF8DD; /* Yellow-11 */
-  --color-gradient-primary: linear-gradient(180deg, #1FA3F1 0%, #194ED4 100%); /* Gradient Primary */
+  --color-gray-1: #0f0d15; /* Gray-1 */
+  --color-gray-2: #1d1929; /* Gray-2 */
+  --color-gray-3: #34303e; /* Gray-3 */
+  --color-gray-4: #615e69; /* Gray-5 */
+  --color-gray-5: #8e8c94; /* Gray-7 */
+  --color-gray-6: #a5a3a9; /* Gray-8 */
+  --color-gray-7: #a1a1a1; /* Gray-6 */
+  --color-gray-light-1: #e8e8ea; /* Gray-11 */
+  --color-gray-light-2: #f9f9f9; /* Gray-12 */
+  --color-gray-light-3: #f0f0f0; /* Gray-Light */
+  --color-white: #fff; /* Base-White */
+  --color-blue-1: #003cff; /* Blue-3 */
+  --color-blue-2: #3363ff; /* Blue-5 */
+  --color-blue-light-1: #ccd8ff; /* Blue-11 */
+  --color-blue-light-2: #e6ecff; /* Blue-12 */
+  --color-green-1: #18ba92; /* Green-1 */
+  --color-green-2: #1bd2a4; /* Green-2 */
+  --color-green-light-1: #d2fbf0; /* Green-11 */
+  --color-red-1: #f42829; /* Red-3 */
+  --color-red-light-1: #fdd4d4; /* Red-11 */
+  --color-orange-1: #ff6e01; /* Orange-3 */
+  --color-orange-light-1: #ffe2cc; /* Orange-11 */
+  --color-yellow-1: #ccb243; /* Yellow-1 */
+  --color-yellow-light-1: #fff8dd; /* Yellow-11 */
+  --color-gradient-primary: linear-gradient(
+    180deg,
+    #1fa3f1 0%,
+    #194ed4 100%
+  ); /* Gradient Primary */
+  --color-gradient-secondary: linear-gradient(90deg, #194ed4 0%, #1fa3f1 100%);
 }
 
 @font-face {
   font-family: "Inter-Regular";
-  src: url("../assets/fonts/Inter/Inter-Regular.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Regular.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Regular.otf") format("opentype");
+  src:
+    url("../assets/fonts/Inter/Inter-Regular.ttf") format("truetype"),
+    url("../assets/fonts/Inter/Inter-Regular.woff2") format("woff2"),
+    url("../assets/fonts/Inter/Inter-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Inter-Medium";
-  src: url("../assets/fonts/Inter/Inter-Medium.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Medium.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Medium.otf") format("opentype");
+  src:
+    url("../assets/fonts/Inter/Inter-Medium.ttf") format("truetype"),
+    url("../assets/fonts/Inter/Inter-Medium.woff2") format("woff2"),
+    url("../assets/fonts/Inter/Inter-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Inter-SemiBold";
-  src: url("../assets/fonts/Inter/Inter-SemiBold.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-SemiBold.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-SemiBold.otf") format("opentype");
+  src:
+    url("../assets/fonts/Inter/Inter-SemiBold.ttf") format("truetype"),
+    url("../assets/fonts/Inter/Inter-SemiBold.woff2") format("woff2"),
+    url("../assets/fonts/Inter/Inter-SemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Inter-Bold";
-  src: url("../assets/fonts/Inter/Inter-Bold.ttf") format("truetype"), url("../assets/fonts/Inter/Inter-Bold.woff2") format("woff2"), url("../assets/fonts/Inter/Inter-Bold.otf") format("opentype");
+  src:
+    url("../assets/fonts/Inter/Inter-Bold.ttf") format("truetype"),
+    url("../assets/fonts/Inter/Inter-Bold.woff2") format("woff2"),
+    url("../assets/fonts/Inter/Inter-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Golos-Regular";
-  src: url("../assets/fonts/Golos/Golos-Regular.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Regular.woff") format("woff");
+  src:
+    url("../assets/fonts/Golos/Golos-Regular.ttf") format("truetype"),
+    url("../assets/fonts/Golos/Golos-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Golos-Medium";
-  src: url("../assets/fonts/Golos/Golos-Medium.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Medium.woff") format("woff");
+  src:
+    url("../assets/fonts/Golos/Golos-Medium.ttf") format("truetype"),
+    url("../assets/fonts/Golos/Golos-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Golos-SemiBold";
-  src: url("../assets/fonts/Golos/Golos-SemiBold.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-SemiBold.woff") format("woff");
+  src:
+    url("../assets/fonts/Golos/Golos-SemiBold.ttf") format("truetype"),
+    url("../assets/fonts/Golos/Golos-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Golos-Bold";
-  src: url("../assets/fonts/Golos/Golos-Bold.ttf") format("truetype"), url("../assets/fonts/Golos/Golos-Bold.woff") format("woff");
+  src:
+    url("../assets/fonts/Golos/Golos-Bold.ttf") format("truetype"),
+    url("../assets/fonts/Golos/Golos-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -122,14 +147,14 @@ html {
 
 /* Body */
 body {
-  background: #F0F0F0;
+  background: #f0f0f0;
 }
 
 /* Images */
 img {
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   max-width: 100%;
   height: auto;
   display: block;
@@ -264,4 +289,4 @@ ol {
 
 .w-full {
   width: 100% !important;
-}/*# sourceMappingURL=main.css.map */
+} /*# sourceMappingURL=main.css.map */

@@ -69,7 +69,7 @@ const Index = () => {
 
                 <HR/>
 
-                <Restricted permittedRole={ROLE_LIST.MINISTRY_DXSH_B_X || ROLE_LIST.BALANCE}>
+                <Restricted permittedRole={ROLE_LIST.MINISTRY_DXSH_B_X}>
                     <Form {...form}>
                         <form autoComplete="off" onSubmit={form.handleSubmit(handleFormSubmit)}>
                             <div className="grid grid-cols-12 mb-5">
@@ -134,7 +134,7 @@ const Index = () => {
 
                             <div>
                                 <Button type="submit">
-                                    Save to
+                                    Save
                                 </Button>
                             </div>
 

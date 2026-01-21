@@ -42,14 +42,6 @@ const addProjectPassportScheme = yup.object().shape({
   status: yup.boolean(),
 });
 
-const addConfirmFilesDeal = yup.object().shape({
-  files: yup.array().of(
-    yup.object().shape({
-      file: yup.mixed().nullable().required("File is required"),
-    })
-  ),
-});
-
 const addProjectFilesScheme = yup.object().shape({
   files: yup.array().of(
     yup.object().shape({

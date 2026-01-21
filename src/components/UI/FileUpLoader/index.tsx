@@ -1,4 +1,4 @@
-import { useCallback, useEffect, forwardRef, useState, useMemo } from "react";
+import { useCallback, useEffect, forwardRef, useState } from "react";
 import { useDropzone, FileWithPath } from "react-dropzone";
 import styles from "./styles.module.scss";
 import { useTranslation } from "react-i18next";
@@ -9,16 +9,16 @@ import classNames from "classnames";
 import { IFIle } from "@app/interfaces";
 
 interface FileUploaderProps {
-  onChange?: (file: IFIle | IFIle[] | undefined | null) => void;
+  onChange?: (file: IFIle | IFIle[] | undefined |null) => void;
   onBlur?: () => void;
   value: IFIle | IFIle[] | undefined | null | File;
   multi?: boolean;
   id: string;
   label?: string;
   error?: string;
-  fileAddPath?: string;
-  type?: "pdf" | "docx" | "all"; // "all" ikkala format uchun
-  isDeletable?: boolean;
+  fileAddPath?:string
+  type?: "pdf" | "image";
+  isDeletable?:boolean
 }
 
 const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
@@ -41,34 +41,19 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
     const [percentage, setPercentage] = useState<number>(0);
-
-    // Qabul qilinadigan fayl formatlarini aniqlash
-    const acceptFormats = useMemo(() => {
-      const pdfTypes = { "application/pdf": [".pdf"] };
-      const docxTypes = {
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-        "application/msword": [".doc"],
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-        "application/vnd.ms-excel": [".xls"],
-      };
-
-      if (type === "pdf") return pdfTypes;
-      if (type === "docx") return docxTypes;
-      return { ...pdfTypes, ...docxTypes }; // "all" holati uchun
-    }, [type]);
-
     const onDrop = useCallback(
       (acceptedFiles: FileWithPath[]) => {
         if (!isLoading) {
-          acceptedFiles.forEach((item) => {
+          acceptedFiles.map((item) => {
             setIsLoading(true);
             const formData = new FormData();
             formData.append("file", item);
             formData.append("name", item.name);
-            
             interceptor
               .post(`${fileAddPath}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
                 onUploadProgress: (progressEvent) => {
                   const total = progressEvent.total || 0;
                   const loaded = progressEvent.loaded || 0;
@@ -76,10 +61,16 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
                 },
               })
               .then((res) => {
-                showMessage(`${res.data.name} ${t("File successfully accepted")}`, "success");
+                showMessage(
+                  `${res.data.name} ${t("File successfully accepted")}`,
+                  "success"
+                );
                 if (multi) {
-                  const currentValue = Array.isArray(value) ? value : [];
-                  onChange?.([...currentValue, res.data] as IFIle[]);
+                  if (Array.isArray(value) && value) {
+                    onChange?.([...value, res.data] as IFIle[]);
+                  } else {
+                    onChange?.([res.data]);
+                  }
                 } else {
                   onChange?.(res.data);
                 }
@@ -89,36 +80,41 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
               })
               .finally(() => {
                 setIsLoading(false);
-                setPercentage(0);
               });
           });
         }
       },
-      [isLoading, multi, onChange, t, value, fileAddPath]
+      [isLoading, multi, onChange, t, value,fileAddPath]
     );
 
-    const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
-      onDrop,
-      accept: acceptFormats,
-      maxFiles: multi ? 10 : 1,
-      maxSize: 10 * 1024 * 1024,
-    });
+    const { getRootProps, getInputProps, isDragActive, fileRejections } =
+      useDropzone({
+        onDrop,
+        accept:
+          type === "pdf"
+            ? { "application/pdf": [".pdf"] }
+            : {
+                "image/jpeg": [".jpg", ".jpeg"],
+                "image/png": [".png"],
+              },
+        maxFiles: 1,
+        maxSize: 10 * 1024 * 1024,
+      });
 
     useEffect(() => {
       if (fileRejections.length > 0) {
-        fileRejections.forEach((rejection) => {
-          rejection.errors.forEach((err) => {
-            if (err.code === "too-many-files") {
+        fileRejections.map((item) => {
+          item?.errors?.map((error) => {
+            if (error.code === "too-many-files") {
               showMessage(t("Send each file separately"));
-            } else if (err.code === "file-too-large") {
+            } else if (error.code === "file-too-large") {
               showMessage(t("File must not exceed 10 mb"));
-            } else if (err.code === "file-invalid-type") {
-              const msg = type === "pdf" 
-                ? t("Only .pdf files are accepted") 
-                : type === "docx" 
-                ? t("Only .docx, .xlsx, .doc files are accepted")
-                : t("Only PDF, Word and Excel files are accepted");
-              showMessage(msg, "error");
+            } else if (error.code === "file-invalid-type") {
+              if (type === "pdf") {
+                showMessage(t("Only .pdf files are accepted"));
+              } else if (type === "image") {
+                showMessage(t("Only .jpg, .png, .jpeg files are accepted"));
+              }
             }
           });
         });
@@ -134,7 +130,11 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
           .then(() => {
             if (Array.isArray(value)) {
               const newValue = value.filter((i) => i.id !== id);
-              onChange?.(newValue.length === 0 ? null : (newValue as IFIle[]));
+              if (newValue.length === 0) {
+                onChange?.(null);
+              } else {
+                onChange?.(newValue as IFIle[]);
+              }
             } else {
               onChange?.(null);
             }
@@ -151,18 +151,6 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
       if (file) window.open(file, "_blank");
     };
 
-    // Yordamchi komponent: Yuklash holati matni
-    const renderUploadLabel = () => {
-      if (isLoading && !isDeleteLoading) return <span>{percentage}% - {t("Loading...")}</span>;
-      if (isDragActive) return <span>{t("Drop your files")} 📂</span>;
-
-      const formatLabel = type === "pdf" ? ".pdf" : type === "docx" ? ".docx, .xlsx" : ".pdf, .docx, .xlsx";
-      return (
-        <span>
-          {t("Upload a file")} ({formatLabel} - {t("up to 10 mb")})
-        </span>
-      );
-    };
 
     return (
       <Input id={id} label={label} error={error}>
@@ -172,34 +160,112 @@ const Index = forwardRef<HTMLInputElement, FileUploaderProps>(
             [styles.error]: !!error,
           })}
         >
-          {/* Fayllar ro'yxati (Multi yoki Single qiymat bo'lsa) */}
-          {(Array.isArray(value) ? value : value ? [value] : []).map((item: any, index) => (
-             <div key={item.id || index} className={styles.values}>
-               <div className={styles.value}>
-                 <Input id={String(item.id)} value={item.name} disabled={true} />
-               </div>
-               {!!onChange && !isDeletable && (
-                 <div
-                   className={classNames(styles.icon, styles.delete, { [styles.isDelete]: isDeleteLoading })}
-                   onClick={() => handleDelete(item.id)}
-                 >
-                   <Delete />
-                 </div>
-               )}
-               {!isDeletable && (
-                 <div className={styles.icon} onClick={() => handleDownload(item.file)}>
-                   <Download />
-                 </div>
-               )}
-             </div>
-          ))}
-
-          {/* Yuklash Inputi (Agar multi bo'lsa yoki hali fayl yuklanmagan bo'lsa ko'rinadi) */}
-          {((multi && (!Array.isArray(value) || value.length < 10)) || !value) && (
+          {multi || Array.isArray(value) ? (
+            <>
+              {((Array.isArray(value) && value.length < 10) || !value) && (
+                <div className={styles.input} {...getRootProps()}>
+                  <input ref={ref} {...getInputProps()} onBlur={onBlur} />
+                  <FileUploader />
+                  {isLoading && !isDeleteLoading ? (
+                    <p>
+                      <span>
+                        {percentage}% - {t("Loading...")}
+                      </span>
+                    </p>
+                  ) : isDragActive ? (
+                    <p>
+                      <span>{t("Drop your files")}</span> 📂
+                    </p>
+                  ) : (
+                    <p>
+                      <span>{t("Upload a file")}</span> (
+                      {type === "pdf" ? ".pdf" : ".jpg, .png, .jpeg"} -{" "}
+                      {t("up to 10 mb")})
+                    </p>
+                  )}
+                </div>
+              )}
+              {Array.isArray(value) && value && (
+                <div className={styles.wrapper}>
+                  {value?.map((item, index) => {
+                    return (
+                      <div key={index} className={styles.values}>
+                        <div className={styles.value}>
+                          <Input
+                            id={item.id as string}
+                            value={item.name}
+                            disabled={true}
+                          />
+                        </div>
+                        {!!onChange && (
+                          <div
+                            className={classNames(styles.icon, styles.delete, {
+                              [styles.isDelete]: isDeleteLoading,
+                            })}
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <Delete />
+                          </div>
+                        )}
+                        <div
+                          className={styles.icon}
+                          onClick={() => handleDownload(item.file)}
+                        >
+                          <Download />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          ) : value ? (
+            <div className={styles.values}>
+              <div className={styles.value}>
+                <Input
+                  id={value?.id as string}
+                  value={value.name}
+                  disabled={true}
+                />
+              </div>
+              {!!onChange && !isDeletable && (
+                <div
+                  className={classNames(styles.icon, styles.delete, {
+                    [styles.isDelete]: isDeleteLoading,
+                  })}
+                  onClick={() => handleDelete(value?.id)}
+                >
+                  <Delete />
+                </div>
+              )}
+              {!isDeletable && (
+                <div
+                  className={styles.icon}
+                  onClick={() => handleDownload(value?.file)}
+                >
+                  <Download />
+                </div>
+              )}
+            </div>
+          ) : (
             <div className={styles.input} {...getRootProps()}>
               <input ref={ref} {...getInputProps()} onBlur={onBlur} />
               <FileUploader />
-              <p>{renderUploadLabel()}</p>
+              {isLoading && !isDeleteLoading ? (
+                <p>
+                  <span>
+                    {percentage}% - {t("Loading...")}
+                  </span>
+                </p>
+              ) : isDragActive ? (
+                <p>{t("Drop your files")} 📂</p>
+              ) : (
+                <p>
+                  <span>{t("Upload a file")}</span> (
+                  {type === "pdf" ? ".pdf" : ".jpg, .png, .jpeg"} -{" "}
+                  {t("up to 10 mb")})
+                </p>
+              )}
             </div>
           )}
         </div>
