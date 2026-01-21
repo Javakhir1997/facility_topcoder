@@ -1,4 +1,5 @@
 export {default as useAppeals} from "./useAppeals"
+export {default as useBalanceApplication} from "./useBalanceApplication"
 export {default as useAddAppeal} from "./useAddAppeal"
 export {default as useAppealDetail} from "./useAppealDetail"
 export {default as useReply} from "./useReply"

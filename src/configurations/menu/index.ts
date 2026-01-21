@@ -61,6 +61,7 @@ export const menu: IMenuItem[] = [
 			ROLE_LIST.MINISTRY_DXSH_B_B,
 			ROLE_LIST.REGION_OPERATOR,
 			ROLE_LIST.MINISTRY_DXSH_B_X,
+			ROLE_LIST.MINISTRY_M_B_B
 		],
 		order: {
 			[ROLE_LIST.APPLICANT]: 2,
@@ -69,6 +70,7 @@ export const menu: IMenuItem[] = [
 			[ROLE_LIST.MINISTRY_DXSH_B_B]: 2,
 			[ROLE_LIST.REGION_OPERATOR]: 2,
 			[ROLE_LIST.MINISTRY_DXSH_B_X]: 2,
+			[ROLE_LIST.MINISTRY_M_B_B]:2
 		}
 	},
 	{

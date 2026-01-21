@@ -18,9 +18,17 @@ export default defineConfig({
         }
     },
     server: {
-        // host: '127.7.7.7',
         open: true,
-        port: 3000
+        port: 3000,
+        // 👇 MANA SHU QISMNI QO'SHING
+        proxy: {
+            '/api': {
+                target: 'https://dxsh.technocorp.uz', // Backend manzili
+                changeOrigin: true,
+                secure: false,
+                cookieDomainRewrite: "localhost",
+            }
+        }
     },
     resolve: {
         alias: {

@@ -1,11 +1,14 @@
-import { Button, GridWrapper, PageLayout, Restricted, Row, ShowIf, Status, Tag } from "@app/components";
+import { Button, GridWrapper, PageLayout, Restricted, Row, ShowIf, Status, Tag, Table } from "@app/components";
 import Wrapper from "@components/Wrapper";
 import {
     useConceptionDetail,
     useEvolutionConception,
     useConfirmConception,
-    useSendToMinistryConception
+    useSendToMinistryConception,
+    useConfirmBolimXodimConception
+
 } from "@modules/conception/hooks";
+import { Column } from "react-table";
 import {
     BUTTON_THEME,
     convertDateFormat,
@@ -16,20 +19,82 @@ import {
 } from "@app/shared";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
+import { Modal } from "@components/UI";
+import { useEffect, useMemo, useState } from "react";
 
 const Index = () => {
 
-    const { data } = useConceptionDetail()
+    const { data, isPending } = useConceptionDetail()
 
     const { t } = useTranslation()
-
+const [performerRejectText, setPerformerRejectText] = useState('')
     const navigate = useNavigate();
 
     const { confirmConception, isPending: isRegionDxshLoading } = useConfirmConception();
 
     const { evolutionConception, isPending: isEvolutionLoading } = useEvolutionConception();
+    const { confirmBolimXodimConception } = useConfirmBolimXodimConception();
     const { sendToMinistry, isPending: isMinistryLoading } = useSendToMinistryConception()
+    const [confirmedByPerformers, setConfirmedByPerformers] = useState<boolean>();
+    const [confirmPerformer, setConfirmPerformer] = useState<IPerformer>();
+    useEffect(() => {
+        if (!data) return
+        if (!data.performers?.length) return;
+
+        const allFieldsTrue = data.performers.every(item =>
+            item.status === 'completed'
+        );
+
+        setConfirmedByPerformers(allFieldsTrue)
+    }, [data]);
+
+    const columns: Column<IPerformer>[] = useMemo(
+        () => [
+            {
+                Header: t('performer'),
+                accessor: row => row.performer.full_name
+            },
+            {
+                Header: t('deadline'),
+                accessor: row => row.deadline
+            },
+            {
+                Header: t('status'),
+                accessor: row => (<Status status={row.status} />)
+            },
+            {
+                Header: t('evalution_status'),
+                accessor: row => {
+                    if (row.evaluation_status) {
+                        return <Status status={'accepted'} />
+                    } else if (row.evaluation_status !== null && typeof row.evaluation_status === 'boolean') {
+                        return <Status status={'rejected'} />
+                    }
+
+                }
+            },
+            {
+                Header: t('evaluation_file'),
+                accessor: row => {
+                    if (row.evaluation_file) {
+                        return <Link href={row.evaluation_file} className={'text-blue-600 hover:underline'}>{t('Addition')}</Link>
+                    } else {
+                        return '-'
+                    }
+
+                }
+            },
+            {
+                Header: t('evaluation_text'),
+                accessor: row => {
+                    if (row.evaluation_text) {
+                        return <Button mini onClick={() => setPerformerRejectText(row.evaluation_text)}>{t('show')}</Button>
+                    }
+                }
+            },
+
+        ], [t, data, data?.performers]
+    )
 
 
     return (
@@ -148,6 +213,37 @@ const Index = () => {
                 </Wrapper>
 
 
+                <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B]}>
+                    <h2 className={'text-gray-400 font-semibold'}>Performers list</h2>
+                    {
+                        data?.performers && data.performers.length ?
+                            <div className="grid grid--cols-12 gap-4">
+                                <Table
+                                    isLoading={isPending}
+                                    columns={columns}
+                                    data={data.performers}
+                                    screen={true}
+                                    pagination={false}
+                                />
+                            </div>
+                            :
+                            <div>Performs list is empty</div>
+                    }
+                    {/* <Modal
+						animation={'fade'}
+						visible={!!performerRejectText}
+						onClose={()=>setPerformerRejectText('')}
+						title={'evolution_text'}
+					>
+						<div>
+							{performerRejectText}
+						</div>
+					</Modal> */}
+                </Restricted>
+
+
+
+
                 <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-6">
                         <Button onClick={() => navigate(-1)} theme={BUTTON_THEME.OUTLINE}>
@@ -215,10 +311,10 @@ const Index = () => {
                             </ShowIf>
                         </Restricted>
 
-                        <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B]}>
+                        {/* <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B]}>
                             <ShowIf
                                 show={
-                                    data?.status === STATUS_LIST.IN_PROCES && data.pr
+                                    data?.status === STATUS_LIST.IN_PROCES & data.pr
                                 }
                             >
                                 <Button
@@ -238,7 +334,7 @@ const Index = () => {
                                 </Button>
 
                             </ShowIf>
-                        </Restricted>
+                        </Restricted> */}
                         <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B]}>
                             <ShowIf
                                 show={
@@ -259,7 +355,32 @@ const Index = () => {
                                 >
                                     Confirm
                                 </Button>
-                                
+
+
+                            </ShowIf>
+                        </Restricted>
+                        <Restricted permittedRole={[ROLE_LIST.MINISTRY_M_B_B]}>
+                            <ShowIf
+                                show={
+                                    data?.status === STATUS_LIST.IN_PROCES
+                                }
+                            >
+                                <Button
+                                    className={'mr-2'}
+                                    theme={BUTTON_THEME.DANGER_OUTLINE}
+                                    onClick={() => navigate('reject')}
+                                >
+                                    Return
+                                </Button>
+
+                                <Button
+                                    theme={BUTTON_THEME.PRIMARY}
+                                    onClick={() => confirmBolimXodimConception({ reject: false })}
+                                    disabled={isEvolutionLoading}
+                                >
+                                    Confirm
+                                </Button>
+
 
                             </ShowIf>
                         </Restricted>

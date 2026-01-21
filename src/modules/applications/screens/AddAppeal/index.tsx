@@ -152,12 +152,13 @@ const Index: FC<IProperties> = ({ edit = false }) => {
 			balance_organization: data.balance_organization ? String(data.balance_organization) : null,
 			object_type: data.object_type ? String(data.object_type) : null,
 			region_by_ball: data.region ? String(data.region) : null,
+			company_name:data.company_name ? String(data.company_name):null
 		};
 
 		// 2. Shaxs turiga qarab shartli maydonlarni qo'shish
 		if (data.owner_type === 'yuridik') {
 			payload.stir = data.stir || '';
-			payload.company_name = data.company_name || '';
+			// payload.company_name = data.company_name || '';
 		} else {
 			payload.pinfl = data.pinfl || '';
 			payload.passport_seria = data.passport_seria || '';

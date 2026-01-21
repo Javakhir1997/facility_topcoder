@@ -21,12 +21,12 @@ const Index = () => {
 
     // const navigate = useNavigate()
     const {data} = useAppealDetail()
-    // const {form, confirmByHavzaApplication} = useConfirmHavzaApplication()
-    //
-    //
-    // const handleFormSubmit = (data: setHavzaObjectEvolutionDTO) => {
-    //      confirmByHavzaApplication(data)
-    // };
+    const {form, confirmByHavzaApplication} = useConfirmHavzaApplication()
+    
+    
+    const handleFormSubmit = (data: setHavzaObjectEvolutionDTO) => {
+         confirmByHavzaApplication(data)
+    };
 
     return (
         <PageLayout>

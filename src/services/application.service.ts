@@ -214,19 +214,29 @@ export const ApplicationService = {
 		return res.data
 	},
 	async confirmConception(id: number, data: ConfirmConceptionDTO) {
-		const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+		// const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+		const res = await interceptor.put<IConceptionDetail>(`application/concept/send-region-dxsh/${id}`, data)
+		console.log(res, data,'vachchchchchchchchcchchchchch')
 		return res.data
 	},
 	async sendToMinistryConception(id: number) {
-		const res = await interceptor.put<IConceptionDetail>(`application/send-concept-to-ministry-dxsh/${id}`)
+		// const res = await interceptor.put<IConceptionDetail>(`application/send-concept-to-ministry-dxsh/${id}`)
+		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-confirm-concept-by-performer/${id}`)
 		return res.data
 	},
+	
 	async evolutionConception(id: number, data: ConfirmConceptionDTO) {
-		const res = await interceptor.put<IConceptionDetail>(`application/evaluation-by-region-dxsh-or-balans/${id}`, data)
+		const res = await interceptor.put<IConceptionDetail>(`application/concept/evaluation-by-region-dxsh-or-balans/${id}`, data)
 		return res.data
 	},
+
+	async evolutionConceptionConfirmBolimXodim(id: number, data: ConfirmConceptionDTO) {
+		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-by-ministry-dxsh-and-departments/${id}`, data)
+		return res.data
+	},
+
 	async attachPerformerToConception(id: number, data: AttachPerformerDTO) {
-		const res = await interceptor.put<IConceptionDetail>(`application/attach-performer-to-concept/${id}`, data.responsibility)
+		const res = await interceptor.put<IConceptionDetail>(`application/concept/attach-performer-to-concept/${id}`, data)
 		return res.data
 	},
 }
