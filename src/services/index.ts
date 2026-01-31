@@ -11,3 +11,4 @@ export * from "./projects-passport.service.ts";
 export * from "./projects.service.ts";
 export * from "./tender.service.ts"
 export * from "./deal.service.ts"
+export * from "./finance.service.ts"

@@ -1,239 +1,199 @@
-import { IUserData, IFIle, ISelectOption } from '@app/interfaces'
+import { IAppealAnswer, IAppealDetail } from "@interfaces/appeal.interface.ts";
+import { IFIle } from "@interfaces/form.interface.ts";
+import { STATUS_LIST } from "@app/shared";
 
-// --- Yordamchi interfeyslar ---
-interface District {
-    id: number;
-    name: string;
+interface IApplicationList {
+  id: number;
+  appeal: IAppealDetail;
+  project_name: string;
+  cost: string;
+  from_date: string;
+  to_date: string;
+  created_at: string;
+  status:
+    | "new"
+    | "negotiated"
+    | "returned"
+    | "in_MoF"
+    | "approved"
+    | "rejected";
+  answer_type?: "returned" | "positive" | "negative";
+  type: "first" | "repetitive";
 }
 
-interface ObjectItem {
-    id: number;
-    name: string;
-    district: District[];
+interface IApplicationDetail {
+  id: number;
+  appeal: IAppealDetail;
+  project_name: string;
+  answer_status: "in_progress" | "returned" | "approved" | "rejected";
+  cost: string;
+  from_date: number;
+  to_date: number;
+  description: string;
+  created_at: string;
+  status:
+    | "new"
+    | "negotiated"
+    | "returned"
+    | "in_MoF"
+    | "approved"
+    | "rejected";
+  answer_type?: "returned" | "positive" | "negative";
+  type: "first" | "repetitive";
+  answers: IAppealAnswer[];
+  files: IFIle[];
+  sxo_files: IFIle[] | null;
 }
 
-interface ObjectType {
-    id: number;
-    name: string;
+interface IApplicationFileGenerate {
+  company_name: string;
+  object_region: string;
+  fullName: string;
+  object_name: string;
+  object_type: string;
+  day: number;
+  month: string;
+  project_cost: string;
+  from_date: string;
+  to_date: string;
+  bank_account?: string;
+  mfo: string;
 }
 
-interface BalanceOrganization {
-    id: number;
-    name: string;
+// Application concept
+
+interface IConceptionList {
+  id: number;
+  volume_work: string;
+  project_name: string;
+  cost: string;
+  from_date: string;
+  to_date: string;
+  created_at: string;
+  status:
+    | "new"
+    | "negotiated"
+    | "returned"
+    | "in_MoF"
+    | "approved"
+    | "rejected";
+  answer_type?: "returned" | "positive" | "negative";
+  type: "first" | "repetitive";
 }
 
-type Status = 'new' | 'pending' | 'approved' | 'rejected' | 'accepted' | 'in_proces' | "returned";
-
-// --- Asosiy Ma'lumotlar Interfeyslari ---
-
-export interface ExampleData {
-    id: number;
-    fullname: string;
-    object_type: ObjectType;
-    object: ObjectItem[];
-    balance_organization: BalanceOrganization;
-    created_at: string;
-    status: string;
+interface IDirectory {
+  id: number;
+  name: string;
 }
 
-// announcement.interface.ts faylida:
-
-// OLDINGI: export interface IAnnouncementListTable {
-export interface IAnnouncementList {  // SHU NOMGA O'ZGARTIRING
-    id: number;
-    object_name: string;
-    object_type: string;
-    address: string;
-    start_date: string;
-    end_date: string;
-    applicants_count: number;
-    applicant_name: string;
-    status: string;
-    caption?: string;
+interface Balans_organization {
+  id: Number;
+  name: String;
 }
 
-export interface IAnnouncementAnswer {
-    id: number;
-    text: string | null;
-    note: string | null;
-    created_by: IUserData;
-    created_at: string;
-    files: IFIle[];
+interface IWinnerObjectDetail {
+  balans_organization: Balans_organization;
+  district: IDirectory;
+  id: number;
+  name: string;
+  region: IDirectory;
+  type: IDirectory;
 }
 
-export interface IPerformer {
-    id: number;
-    status: string;
-    deadline: string;
-    evaluation_status: string;
-    evaluation_text: string;
-    evaluation_file: string;
-    performer: {
-        id: number;
-        full_name: string
-    }
+interface IWinnerDetailToDeal {
+  id: number;
+  firstname: string;
+  lastname: string;
+  middle_name: string;
+  id_number: string | null;
+  region: IDirectory;
+  district: IDirectory;
+  company_name: string | null;
+  stir: string | null;
+  phone: string;
+  email: string;
+  object: IWinnerObjectDetail[];
+  concept: string | null;
+  protocol: string | null;
+  winner_bank_account: string | null;
+  sxo_type: string | null;
+  balance_keeper: string | null;
 }
 
-// --- Detal Ma'lumotlar uchun (Combined) ---
-
-interface IExampleDataDetail {
-    id: number;
-    district: District | null;
-    object_type: ObjectType;
-    balance_organization: BalanceOrganization;
-    object: ObjectItem[];
-    created_at: string;
-    updated_at: string;
-    is_active: boolean;
-    status: Status;
-    stir: string;
-    pinfl: string | null;
-    passport_seria: string | null;
-    passport_number: string | null;
-    firstname: string | null;
-    lastname: string | null;
-    middle_name: string | null;
-    id_number: string | null;
-    address: string | null;
-    company_name: string | null;
-    phone: string | null;
-    email: string | null;
-    activity_experience: number;
-    indebtedness: boolean;
-    stability_rating: string;
-    success_projects: string | null;
-    investment_ability: number;
-    techniques: string;
-    financing_opportunity: string;
-    return_on_investment: boolean;
-    body: string | null;
-    region_by_ball: number;
-    investment_ability_ball: number;
-    experience_ball: number;
-    techniques_ball: number;
-    stability_rating_ball: number;
-    success_projects_ball: number;
-    return_on_investment_ball: number;
-    rejection_text: string | null;
-    rejection_performer_status: string | null;
-    rejection_performer_text: string | null;
-    object_evaluation_balance_organization: boolean;
-    object_evaluation_balance_organization_text: string | null;
-    evaluation_confirmation_documents: string | null;
-    created_by: number;
-    updated_by: number | null;
-    owner: number | null;
-    activity_type: number;
-    indebtedness_file: { file: string; name: string; };
-    success_projects_file: { file: string; name: string; };
-    rejection_file: number | null;
-    rejection_performer_file: number | null;
+interface IConceptionDetail {
+  id: number;
+  volume_work: string;
+  project_name: string;
+  cost: string;
+  from_date: string;
+  to_date: string;
+  created_at: string;
+  status: STATUS_LIST;
+  answer_type?: "returned" | "positive" | "negative";
+  type: "first" | "repetitive";
+  project_type: string;
+  description_documents_list: string;
+  point3_1: string;
+  point3_2: string;
+  point3_3: string;
+  point3_4: string;
+  point3_5_a: string;
+  point3_5_b: string;
+  point3_5_v: string;
+  point3_5_g: string;
+  point3_5_d: string;
+  point3_6_a: number;
+  point3_6_b_0: string;
+  point3_6_b: number;
+  point3_7: number;
+  point3_8_1: number;
+  point3_8_2: number;
+  point3_8_3: number;
+  point3_8_4: number;
+  point3_8_5: number;
+  point3_8_6: number;
+  point3_8_7: number;
+  point3_8_8: number;
+  point3_8_9: number;
+  point3_8_10: number;
+  point3_8_11: number;
+  point3_8_12: number;
+  point3_8_13: number;
+  point3_8_14: number;
+  point3_8_15: number;
+  point3_8_16: number;
+  point3_8_17: number;
+  point3_8_18: number;
+  point3_8_19: number;
+  point3_8_20: number;
+  point3_8_21: number;
+  point3_8_22: number;
+  point3_8_23: number;
+  point3_9_a: string;
+  point3_9_b: string;
+  point3_9_v: string;
+  point3_9_d: string;
+  point3_9_e: string;
+  point3_9_g: string;
+  point3_10_comment: string;
+  point3_11_comment: string;
+  point3_12_comment: string;
+  point3_13: string;
+  point3_14: string;
+  point3_15: string;
+  point3_16: string;
+  point3_17: string;
+  point3_18_a: string;
+  point3_18_b: string;
+  attachment?: string | number;
 }
 
-interface ICombinedData {
-    id: number;
-    firstname: string;
-    inn_number: string;
-    lastname: string;
-    patronymic?: string | null;
-    id_number: string;
-    description: string;
-    address: string;
-    organization: string;
-    bank_account: string;
-    phone: string;
-    region: ISelectOption;
-    sxo_region: ISelectOption;
-    email: string;
-    sxo_objects: ISelectOption[];
-    object_types: ISelectOption[];
-    owner_organization: ISelectOption;
-    created_at: string;
-    status: Status;
-    answer_status: 'in_progress' | 'returned' | 'approved';
-    answer_type?: 'returned' | 'positive' | 'negative' | null;
-    type: 'first' | 'repetitive';
-    answers: IAnnouncementAnswer[];
-    files: IFIle[];
-    file: string;
-    rejection_file: string;
-    performers?: IPerformer[];
-    confirmation_documents: {
-        id: string;
-        attachment: { name: string; file: string; }
-    }[]
-}
-
-export type IAnnouncementDetail = IExampleDataDetail & ICombinedData;
-
-// --- FILE GENERATION INTERFACES ---
-
-export interface IContractFileGenerate {
-    company_name: string;
-    object_region: string;
-    object_name: string;
-    object_type: string;
-    day: number;
-    month: string;
-    project_cost: string;
-    from_date: string;
-    to_date: string;
-    bank_account: string;
-    mfo?: string | null;
-}
-
-export interface IAnnouncementFileGenerate {
-    owner_organization: string;
-    object_region: string;
-    object_name: string;
-    object_type: string;
-    company_name: string;
-    fullName: string;
-    content: string
-}
-
-export interface IAttachmentResponse {
-    attachment: number;
-    file_path: string;
-    message: string;
-}
-
-// --- FORM INTERFACES (Servisdagi xatoliklarni yopish uchun) ---
-
-export interface IAnnouncementForm {
-    firstName: string;
-    lastName: string;
-    middleName?: string | null;
-    tin: string;
-    idNumber: string;
-    address: string;
-    organization: string;
-    bankAccount: string;
-    phone: string;
-    region: number;
-    wmfRegion: number;
-    email: string;
-    content: string;
-    objects: number[];
-    wmfType: number;
-    balanceHolder: number;
-    attachment?: number;
-    files: any[];
-}
-
-
-
-export interface IReplyAnnouncementForm {
-    responseText: string;
-    responseType: 'positive' | 'negative' | 'returned';
-    files: any[];
-}
-
-export interface IReturnAnnouncementForm {
-    comment: string;
-}
-
-export interface IOperatorReturnAnnouncementForm {
-    responseText: string;
-    files: any[];
-}
+export type {
+  IApplicationList,
+  IApplicationDetail,
+  IApplicationFileGenerate,
+  IConceptionList,
+  IConceptionDetail,
+  IWinnerDetailToDeal,
+  IWinnerObjectDetail,
+};

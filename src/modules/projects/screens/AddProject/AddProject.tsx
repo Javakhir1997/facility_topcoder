@@ -7,17 +7,23 @@ import {
   PageTitle,
   Select,
 } from "@components/index";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelect } from "@hooks/index";
-import { ProjectForm } from "@interfaces/projects.interface";
-import useAddProject from "@modules/projects/hooks/useAddProject";
-import { BUTTON_THEME, FIELD } from "@shared/constants";
-import { projectScheme } from "@shared/helpers";
-import { getSelectValue, showMessage } from "@shared/utilities";
-import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { projectScheme } from "@shared/helpers";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
+import { BUTTON_THEME, FIELD } from "@shared/constants";
+import { ProjectForm } from "@interfaces/projects.interface";
+import { getSelectValue, showMessage } from "@shared/utilities";
+import useAddProject from "@modules/projects/hooks/useAddProject";
 
 export default function AddProject() {
+  const navigate = useNavigate();
+  const useAddProjectData = useAddProject();
+  const { data: typesData } = useSelect("object-types");
+  const { data: districts = [] } = useSelect("districts");
+  const { data: organizations } = useSelect("owner-organization");
+
   const {
     register,
     handleSubmit,
@@ -35,18 +41,14 @@ export default function AddProject() {
     },
     resolver: yupResolver(projectScheme),
   });
-  const useAddProjectData = useAddProject();
-  const navigate=useNavigate()
+
   async function onSubmit(data: ProjectForm) {
     const res = await useAddProjectData.addProject(data);
     if (res) {
-      showMessage("Project created successfully","success");
-      navigate(-1)
+      showMessage("Project created successfully", "success");
+      navigate(-1);
     }
   }
-  const { data: organizations } = useSelect("owner-organization");
-  const { data: districts = [] } = useSelect("districts");
-  const { data: typesData } = useSelect("object-types");
 
   const objectTypesOptions = (typesData?.results || []).map((item) => ({
     value: item.id,
@@ -55,9 +57,26 @@ export default function AddProject() {
 
   return (
     <PageLayout>
-      <PageTitle title="Project" />
-      <div style={{ marginTop: "20px" }}></div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="full-width d-flex justify-center align-center bg-white rounded-2xl px-5">
+        <PageTitle title="Project">
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button type="submit" theme={BUTTON_THEME.PRIMARY}>
+              Send
+            </Button>
+          </div>
+        </PageTitle>
+      </div>
+
+      <form
+        className="p-10 w-full  bg-white rounded-2xl"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <FormGrid>
           <Input
             id="name"
@@ -67,6 +86,7 @@ export default function AddProject() {
             error={errors.name?.message}
             {...register("name")}
           />
+
           <Controller
             name="type"
             control={control}
@@ -85,6 +105,7 @@ export default function AddProject() {
               />
             )}
           />
+
           <Controller
             name="owner_organization"
             control={control}
@@ -103,6 +124,7 @@ export default function AddProject() {
               />
             )}
           />
+
           <Controller
             name="district"
             control={control}
@@ -122,6 +144,7 @@ export default function AddProject() {
               />
             )}
           />
+
           <Input
             id="addess"
             type={FIELD.TEXT}
@@ -130,6 +153,7 @@ export default function AddProject() {
             error={errors.address?.message}
             {...register("address")}
           />
+
           <Controller
             name="used"
             control={control}
@@ -142,6 +166,7 @@ export default function AddProject() {
               />
             )}
           />
+
           <Controller
             name="investment_plan_created"
             control={control}
@@ -155,19 +180,6 @@ export default function AddProject() {
             )}
           />
         </FormGrid>
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "end",
-            marginTop: "40px",
-            marginRight: "40px",
-          }}
-        >
-          <Button type="submit" theme={BUTTON_THEME.PRIMARY}>
-            Send
-          </Button>
-        </div>
       </form>
     </PageLayout>
   );

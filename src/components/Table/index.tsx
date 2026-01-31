@@ -39,6 +39,7 @@ const Index: FC<IProperties> = ({
   currentPage,
 }) => {
   const { page, pageSize } = usePagination();
+
   return (
     <div className={styles.root}>
       <ReactTable

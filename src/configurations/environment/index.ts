@@ -1,6 +1,5 @@
 // const env = import.meta.env
 
+const BASE_URL = "https://dxsh.technocorp.uz/api";
 
-export const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-
+export { BASE_URL };

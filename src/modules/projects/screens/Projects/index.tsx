@@ -6,19 +6,21 @@ import {
   Status,
   Table,
 } from "@components/index";
-import { Project, ProjectColumn } from "@interfaces/projects.interface";
+import { Column } from "react-table";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
 import FilterInProject from "@modules/projects/components/Filter";
 import useGetProjects from "@modules/projects/hooks/useGetProjects";
-import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { Column } from "react-table";
+import { Project, ProjectColumn } from "@interfaces/projects.interface";
 
 export default function Index() {
   const { t } = useTranslation();
+
   const [filters, setFilters] = useState<{
     [key: string]: string | string[] | number;
   }>({});
+
   const {
     isPending,
     projects,
@@ -38,6 +40,7 @@ export default function Index() {
     setFilters((prev) => ({ ...prev, [name]: value }));
     onPageSizeChange(10);
   }
+
   const columns: Column<ProjectColumn>[] = useMemo(
     () => [
       {
@@ -59,13 +62,16 @@ export default function Index() {
         ),
       },
     ],
-    [t]
+    [t],
   );
+
   useEffect(() => {
     onPageSizeChange(10);
   }, []);
+
   const mappedData = useMemo(() => {
     if (!projects.results) return [];
+
     return projects.results.map((item: Project) => ({
       ...item,
       name: item?.name,
@@ -74,18 +80,25 @@ export default function Index() {
       status: item?.used,
     }));
   }, [projects?.results]);
+
   const navigate = useNavigate();
+
   function handleRow(id: string | number): void {
-    navigate(`/projects/${id}`);
+    navigate(`/objects/${id}`);
   }
+
   return (
     <PageLayout>
-      <PageTitle title="Projects">
-        <Button icon={<Add />} navigate="add">
-          Create project
-        </Button>
-      </PageTitle>
-      <FilterInProject handleFilter={handleFilter} />
+      <div className="full-width d-flex justify-center align-center bg-white rounded-2xl px-5">
+        <PageTitle title="Objects">
+          <FilterInProject handleFilter={handleFilter} />
+
+          <Button icon={<Add />} navigate="add">
+            Create project
+          </Button>
+        </PageTitle>
+      </div>
+
       <Table
         total={total}
         currentPage={currentPage}

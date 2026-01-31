@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { AnnouncementListFilter } from "@modules/announcements/components";
 import { useAnnouncements } from "@modules/announcements/hooks";
-import { IAnnouncementList } from "@app/interfaces";
+import { IAnnouncementList, } from "@app/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@app/hooks";
 

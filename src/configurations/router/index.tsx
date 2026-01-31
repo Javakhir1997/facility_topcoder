@@ -28,14 +28,11 @@ import {
   TenderList,
   AddTender,
   TenderApplicantList,
-  WinnerDealFileViewer,
+  ProjectPasswordList,
   DealDetail,
   DealsList,
   DealConfirmFile,
   NotFound,
-  ObjectScreenList,
-  ObjectDetailsScreen,
-  AddObjectsScreen,
   FinansPlansList,
   FinansPlansDetails,
   AddFinansPlansDetails,
@@ -47,7 +44,24 @@ import {
   RejectApplicantDeal,
   RejectMinistryDeal,
   RejectVazDxshDeal,
-  RejectMasulBolimDxsh
+  RejectMasulBolimDxsh,
+  AddProjectPassort,
+  ProjectPassportDetail,
+  Projects,
+  ProjectDetail,
+  EditProject,
+  AddProject,
+  DeedLists,
+  DeedDetails,
+  ApcationFormList,
+  AddAplicationForm,
+  AplicationDetails,
+  InvestmentList,
+  InvestmentDetail,
+  AddInvestment,
+  ReportDetail,
+  AddReport,
+  ReportReturn,
 } from "@app/modules";
 import { AddConcept } from "@modules/applicationsOld";
 
@@ -211,15 +225,24 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ObjectScreenList />,
-          },
-          {
-            path: "add",
-            element: <AddObjectsScreen />,
+            element: <Projects />,
           },
           {
             path: ":id",
-            element: <ObjectDetailsScreen />,
+            children: [
+              {
+                index: true,
+                element: <ProjectDetail />,
+              },
+              {
+                path: "edit",
+                element: <EditProject />,
+              },
+            ],
+          },
+          {
+            path: "add",
+            element: <AddProject />,
           },
         ],
       },
@@ -307,40 +330,40 @@ export const router = createBrowserRouter([
                 ],
               },
               {
-                path:"reject_applicant",
-                children:[
+                path: "reject_applicant",
+                children: [
                   {
-                    index:true,
-                    element: <RejectApplicantDeal/>
-                  }
-                ]
+                    index: true,
+                    element: <RejectApplicantDeal />,
+                  },
+                ],
               },
               {
-                path:"reject-ministry",
-                children:[
+                path: "reject-ministry",
+                children: [
                   {
-                    index:true,
-                    element: <RejectMinistryDeal/>
-                  }
-                ]
+                    index: true,
+                    element: <RejectMinistryDeal />,
+                  },
+                ],
               },
               {
-                path:"reject-vazdxsh",
-                children:[
+                path: "reject-vazdxsh",
+                children: [
                   {
-                    index:true,
-                    element: <RejectVazDxshDeal/>
-                  }
-                ]
+                    index: true,
+                    element: <RejectVazDxshDeal />,
+                  },
+                ],
               },
               {
-                path:"reject-masulbolimdxsh",
-                children:[
+                path: "reject-masulbolimdxsh",
+                children: [
                   {
-                    index:true,
-                    element: <RejectMasulBolimDxsh/>
-                  }
-                ]
+                    index: true,
+                    element: <RejectMasulBolimDxsh />,
+                  },
+                ],
               },
               {
                 path: "attach-performer",
@@ -392,13 +415,112 @@ export const router = createBrowserRouter([
           },
         ],
       },
-
+      //   Old Projects
+      {
+        path: "projects",
+        children: [
+          {
+            index: true,
+            element: <ProjectPasswordList />,
+          },
+          {
+            path: "add",
+            element: <AddProjectPassort />,
+          },
+          {
+            path: ":id",
+            element: <ProjectPassportDetail />,
+          },
+        ],
+      },
+      // Deed pages
+      {
+        path: "deed",
+        children: [
+          {
+            index: true,
+            element: <DeedLists />,
+          },
+          {
+            path: ":id",
+            element: <DeedDetails />,
+          },
+        ],
+      },
+      // Applications Form
+      {
+        path: "applicationform",
+        children: [
+          {
+            index: true,
+            element: <ApcationFormList />,
+          },
+          {
+            path: "add",
+            element: <AddAplicationForm />,
+          },
+          {
+            path: ":id",
+            element: <AplicationDetails />,
+          },
+        ],
+      },
+      // Add Concept
       {
         path: "add",
         children: [
           {
             index: true,
             element: <AddConcept />,
+          },
+        ],
+      },
+
+      // Investments
+      {
+        path: "investments",
+        children: [
+          {
+            index: true,
+            element: <InvestmentList />,
+          },
+          {
+            path: ":id",
+            children: [
+              {
+                index: true,
+                element: <InvestmentDetail />,
+              },
+              {
+                path: "add",
+                element: <AddInvestment />,
+              },
+              {
+                path: "edit",
+                element: <AddInvestment edit={true} />,
+              },
+              {
+                path: "report",
+                children: [
+                  {
+                    index: true,
+                    element: <ReportDetail />,
+                  },
+                  {
+                    path: "add",
+                    element: <AddReport />,
+                  },
+                  {
+                    path: "edit",
+                    element: <AddReport edit={true} />,
+                  },
+                  {
+                    path: "return",
+                    element: <ReportReturn />,
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -417,132 +539,3 @@ export const router = createBrowserRouter([
     errorElement: <Error />,
   },
 ]);
-
-// {
-// 	path: 'appeals',
-// 	children: [
-// 		{
-// 			index: true,
-// 			element: <Appeals/>
-// 		},
-// 		{
-// 			path: 'add',
-// 			element: <AddAppeal/>
-// 		},
-// 		{
-// 			path: ':id',
-// 			children: [
-// 				{
-// 					index: true,
-// 					element: <AppealDetail/>
-// 				},
-// 				{
-// 					path: 'reply',
-// 					element: <ReplyAppeal/>
-// 				},
-// 				{
-// 					path: 'return',
-// 					element: <ReturnAppeal/>
-// 				},
-// 				{
-// 					path: 'edit',
-// 					element: <AddAppeal edit={true}/>
-// 				}
-// 			]
-// 		}
-// 	]
-// },
-// {
-// 	path: 'investments',
-// 	children: [
-// 		{
-// 			index: true,
-// 			element: <InvestmentList/>
-// 		},
-// 		{
-// 			path: ':id',
-// 			children: [
-// 				{
-// 					index: true,
-// 					element: <InvestmentDetail/>
-// 				},
-// 				{
-// 					path: 'add',
-// 					element: <AddInvestment/>
-// 				},
-// 				{
-// 					path: 'edit',
-// 					element: <AddInvestment edit={true}/>
-// 				},
-// 				{
-// 					path: 'report',
-// 					children: [
-// 						{
-// 							index: true,
-// 							element: <ReportDetail/>
-// 						},
-// 						{
-// 							path: 'add',
-// 							element: <AddReport/>
-// 						},
-// 						{
-// 							path: 'edit',
-// 							element: <AddReport edit={true}/>
-// 						},
-// 						{
-// 							path: 'return',
-// 							element: <ReportReturn/>
-// 						}
-// 					]
-// 				}
-// 			]
-// 		}
-// 	]
-// },
-// {
-// 	path: 'electricity',
-// 	children: [
-// 		{
-// 			index: true,
-// 			element: <ElectricityObjectsList/>
-// 		},
-// 		{
-// 			path: ':id',
-// 			children: [
-// 				{
-// 					index: true,
-// 					element: <ElectricityObjectDetail/>
-// 				},
-// 				{
-// 					path: 'add',
-// 					element: <ElectricityAddPlan/>
-// 				},
-// 				{
-// 					path: 'edit',
-// 					element: <ElectricityAddPlan edit={true}/>
-// 				},
-// 				{
-// 					path: 'report',
-// 					children: [
-// 						{
-// 							index: true,
-// 							element: <ElectricityReportDetail/>
-// 						},
-// 						{
-// 							path: 'add',
-// 							element: <ElectricityAddReport/>
-// 						},
-// 						{
-// 							path: 'edit',
-// 							element: <ElectricityAddReport edit={true}/>
-// 						},
-// 						{
-// 							path: 'return',
-// 							element: <ElectricityReportReturn/>
-// 						}
-// 					]
-// 				}
-// 			]
-// 		}
-// 	]
-// },
