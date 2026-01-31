@@ -15,28 +15,28 @@ import {
 export const AnnouncementService = {
     // getAppeals -> getAnnouncements (lekin appeal endpointga uradi)
     async getAnnouncements(
-        queryParams: ISearchParams, 
-        isOperator: boolean = false, 
+        queryParams: ISearchParams,
+        isOperator: boolean = false,
         isDirector: boolean = false,
-        
+
     ) {
         // Endpointlar APPEAL ga qaytarildi
-        let endpoint = 'application'; // Default (Applicant)
+        let endpoint = 'application/announcements/'; // Default (Applicant)
 
-        if (isDirector) {
-            endpoint = 'appeal/director/appeal/list';
-        } else if (isOperator) {
-            endpoint = 'appeal/operator/appeal/list';
-        } 
+        // if (isDirector) {
+        //     endpoint = 'appeal/director/appeal/list';
+        // } else if (isOperator) {
+        //     endpoint = 'appeal/operator/appeal/list';
+        // } 
 
-        const res = await interceptor<IListResponse<IAnnouncementList>>(endpoint, { params: queryParams });
+        const res = await interceptor<IListResponse<IAnnouncementList>>(endpoint);
         return res.data;
     },
 
     // getAppeal -> getAnnouncement
     async getAnnouncement(id: number | string) {
         // application/{id} ga murojaat qiladi
-        const res = await interceptor<IAnnouncementDetail>(`application/${id}`)
+        const res = await interceptor<IAnnouncementDetail>(`application/announcements/${id}`)
         return res.data
     },
 
@@ -120,6 +120,13 @@ export const AnnouncementService = {
         }
         // URL: appeal/director
         const res = await interceptor.patch(`appeal/director/${id}/return`, newData)
+        return res.data
+    },
+
+    async updateAnnouncementConfirm(id: number, data: any) {
+        
+        const res = await interceptor.put<any>(`application/announcements/${id}/update/`, data)
+        console.log(res, data, 'elon keldi')
         return res.data
     },
 

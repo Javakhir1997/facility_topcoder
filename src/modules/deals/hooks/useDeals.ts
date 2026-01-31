@@ -13,7 +13,7 @@ export default function Index() {
 
 	const {isPending, data} = useQuery({
 			queryKey: ['deals', page, pageSize, status],
-			queryFn: () => DealService.getAnnouncements(
+			queryFn: () => DealService.getDeals(
 				{
 					page: String(page),
 					pageSize: String(pageSize),

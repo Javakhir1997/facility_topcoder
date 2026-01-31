@@ -9,20 +9,23 @@ import {showMessage} from "@app/shared";
 import {useNavigate, useParams} from "react-router-dom";
 import {apiClient} from "@shared/api";
 import {API_ENDPOINTS} from "@shared/api/endpoints.ts";
+import { RejectDealDTO, rejectDealDTOSchema } from "@entities/deal";
+import { ConfirmDealDTOSchema } from "@entities/deal/schemas";
 
 
-const UseRejectApplication = () => {
 
-    const form = useForm<RejectApplicationDTO>({
-        resolver: zodResolver(rejectApplicationDTOSchema),
+const useRejectMinistryDeal = () => {
+
+    const form = useForm<RejectDealDTO>({
+        resolver: zodResolver(rejectDealDTOSchema),
     });
 
     const {id = ''} = useParams();
     const navigate = useNavigate();
 
-
-    const {isPending: isRejectPending, mutate: rejectApplication} = useMutation({
-        mutationFn: (data: RejectApplicationDTO) => apiClient.patch(`${API_ENDPOINTS.APPLICATION_REJECT}/${id}`, data),
+    console.log(API_ENDPOINTS.DEAL_REJECT_APPLICANT_DXSH)
+    const {isPending: isRejectPending, mutate: rejectMinistryDeal} = useMutation({
+        mutationFn: (data: RejectDealDTO) => apiClient.patch(`${API_ENDPOINTS.DEAL_REJECT_MINISTRY}/${id}`, data),
         onSuccess: () => {
             showMessage("Successfully", "success")
             navigate(-1)
@@ -30,7 +33,7 @@ const UseRejectApplication = () => {
         }
     })
 
-    return {form, rejectApplication, isRejectPending}
+    return {form, rejectMinistryDeal, isRejectPending}
 };
 
-export default UseRejectApplication;
+export default useRejectMinistryDeal;

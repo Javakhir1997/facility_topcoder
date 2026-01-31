@@ -17,7 +17,7 @@ export const CommonService = {
 	},
     async getDistricts(id:number | null){
         const res = await interceptor(
-          `https://dxsh.technocorp.uz/api/common/districts?region=${id}`
+          `common/districts?region=${id}`
         );
         return res.data
     }

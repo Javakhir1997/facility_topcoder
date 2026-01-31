@@ -9,10 +9,9 @@ import {
 } from "@app/components";
 import {
   arrayToString,
-  convertDateFormat,
+  BUTTON_THEME, // Button theme kerak bo'lishi mumkin
   ROLE_LIST,
-  statusTabOptions,
-  tenderStatus
+  tenderStatus,
 } from "@app/shared";
 import { Add } from "@app/assets";
 import { Column } from "react-table";
@@ -39,8 +38,6 @@ const Index = () => {
   const navigate = useNavigate();
   const { user } = useAppContext();
 
-  console.log(appeals, "tender uchun");
-
   const columns: Column<AppealData>[] = useMemo(
     () => [
       {
@@ -49,7 +46,7 @@ const Index = () => {
       },
       {
         Header: t("WMF type"),
-        accessor: (row) => row.object_type?.name || "-", // optional
+        accessor: (row) => row.object_type?.name || "-",
       },
       ...([ROLE_LIST.APPLICANT].includes(user.role)
         ? [
@@ -61,12 +58,11 @@ const Index = () => {
         : []),
       {
         Header: t("Tender state date"),
-        accessor: (row) =>
-          row.start_date ? row.start_date : "-",
+        accessor: (row) => (row.start_date ? row.start_date : "-"),
       },
       {
         Header: t("Request status"),
-        accessor: (row) => <Status status={row.status || "unknown"} />, // default qiymat
+        accessor: (row) => <Status status={row.status || "unknown"} />,
       },
       {
         Header: t("Applicants Count"),
@@ -80,8 +76,35 @@ const Index = () => {
             },
           ]
         : []),
+        
+      // --- YANGI QO'SHILGAN ACTION USTUNI ---
+      {
+        Header: t("Action"),
+        id: "actions", // Accessor shart emas, ID yetarli
+        Cell: ({ row }) => {
+          return (
+            <div 
+                className="flex justify-center" 
+                onClick={(e) => e.stopPropagation()} // Qator bosilishini oldini olish
+            >
+              <Button
+                size="sm" // Kichikroq tugma
+                // Agar maxsus rang kerak bo'lsa: theme={BUTTON_THEME.PRIMARY} 
+                onClick={() => {
+                   // G'olib biriktirish sahifasiga yo'naltirish
+                   // Masalan: /tenders/{id} yoki /tenders/{id}/selection
+                   navigate(`/tenders/${row.original.id}/winnerCreate`); 
+                }}
+              >
+                {t("G'olib biriktirish")}
+              </Button>
+            </div>
+          );
+        },
+      },
+      // -------------------------------------
     ],
-    [t, user.role]
+    [t, user.role, navigate]
   );
 
   const handleRow = (id: number) => {

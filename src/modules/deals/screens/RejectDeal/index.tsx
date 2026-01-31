@@ -13,27 +13,26 @@ import {
     ROLE_LIST,
     STATUS_LIST
 } from "@app/shared";
-import {useAppealDetail} from "@modules/applications/hooks";
+import {useDealDetail} from "@modules/deals/hooks";
 import {useAppContext} from "@app/hooks";
-import useRejectApplication from "@modules/applications/hooks/useRejectApplication";
+import useRejectDeal from "@modules/deals/hooks/useRejectDeal";
 import {
     Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
 } from '@shared/component/ui/form';
 import {Textarea} from "@shared/component/ui/textarea.tsx";
 import type {RejectApplicationDTO} from "@entities/application";
 import {IFIle} from "@app/interfaces";
+import { RejectDealDTO } from "@entities/deal";
 
 const Index = () => {
-
-
-
     // const navigate = useNavigate()
-    const {data} = useAppealDetail()
+    const {data} = useDealDetail()
     const {user} = useAppContext()
-    const {form, rejectApplication} = useRejectApplication()
+    const {form, rejectDeal} = useRejectDeal()
 
-    const handleFormSubmit = (data: RejectApplicationDTO) => {
-        rejectApplication(data)
+    const handleFormSubmit = (data: RejectDealDTO) => {
+        // Zod schema formani avtomatik tarzda performer obyekti ichiga joylaydi
+        rejectDeal(data)
     };
 
     return (
@@ -48,7 +47,7 @@ const Index = () => {
                         }
                     </Tag>
                     {
-                        [ROLE_LIST.OPERATOR, ROLE_LIST.HEAD, ROLE_LIST.FINANCE_EMPLOYEE].includes(user.role) &&
+                        [ROLE_LIST.OPERATOR, ROLE_LIST.HEAD, ROLE_LIST.FINANCE_EMPLOYEE, ROLE_LIST.APPLICANT].includes(user.role) &&
                         <>
                             <Tag title="Reply letter">
                                 {
@@ -71,14 +70,15 @@ const Index = () => {
 
                 <HR/>
 
-                <Restricted permittedRole={ROLE_LIST.MINISTRY_DXSH_B_B}>
+                <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B, ROLE_LIST.MINISTRY_FINANCE,ROLE_LIST.APPLICANT]}>
                     <Form {...form}>
                         <form autoComplete="off" onSubmit={form.handleSubmit(handleFormSubmit)}>
                             <div className="grid grid-cols-12 mb-5">
                                 <div className={'col-span-12 mb-5'}>
                                     <FormField
                                         control={form.control}
-                                        name={'rejection_text'}
+                                        // O'ZGARISH: name 'performer.reject_text' ga o'zgartirildi
+                                        name={'reject_text'}
                                         render={({field}) => {
                                             return (
                                                 <FormItem>
@@ -93,24 +93,10 @@ const Index = () => {
                                     />
                                 </div>
                                 <div className={'col-span-12 mb-5'}>
-                                    {/*<FormField*/}
-                                    {/*    control={form.control}*/}
-                                    {/*    name={'rejection_file'}*/}
-                                    {/*    render={({field}) => {*/}
-                                    {/*        return (*/}
-                                    {/*            <FormItem>*/}
-                                    {/*                <FormLabel required>File</FormLabel>*/}
-                                    {/*                <FormControl>*/}
-                                    {/*                    <InputFile form={form} {...field} />*/}
-                                    {/*                </FormControl>*/}
-                                    {/*                <FormMessage/>*/}
-                                    {/*            </FormItem>*/}
-                                    {/*        )*/}
-                                    {/*    }}*/}
-                                    {/*/> */}
                                     <FormField
                                         control={form.control}
-                                        name={'rejection_file'}
+                                        // O'ZGARISH: name 'performer.reject_file' ga o'zgartirildi
+                                        name={'reject_file'}
                                         render={({field}) => {
                                             return (
                                                 <FormItem>
@@ -119,6 +105,7 @@ const Index = () => {
                                                         <FileUpLoader
                                                             id="rejection_file"
                                                             ref={field.ref}
+                                                            // Typescript xatosini oldini olish uchun
                                                             value={field.value as unknown as IFIle}
                                                             onBlur={field.onBlur}
                                                             onChange={field.onChange}

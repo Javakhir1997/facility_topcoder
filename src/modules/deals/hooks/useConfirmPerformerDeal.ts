@@ -11,7 +11,7 @@ import {apiClient} from "@shared/api";
 import {API_ENDPOINTS} from "@shared/api/endpoints.ts";
 
 
-const UseConfirmByPerformerApplication = () => {
+const useConfirmByPerformerDeal = () => {
 
     const form = useForm<ConfirmByApplicationDTO>({
         resolver: zodResolver(confirmByPerformerApplicationDTOSchema),
@@ -25,7 +25,7 @@ const UseConfirmByPerformerApplication = () => {
 
 
     const {isPending: isRejectPending, mutate: confirmByPerformer} = useMutation({
-        mutationFn: () => apiClient.patch(`${API_ENDPOINTS.APPLICATION_CONFIRM_BY_PERFORMER}/${id}`),
+        mutationFn: () => apiClient.patch(`${API_ENDPOINTS.DEAL_CONFIRM_BY_PERFORMER}/${id}`),
         onSuccess: (data) => {
             if(data.success){
                 showMessage("Successfully", "success")
@@ -41,4 +41,4 @@ const UseConfirmByPerformerApplication = () => {
     return {form, confirmByPerformer, isRejectPending}
 };
 
-export default UseConfirmByPerformerApplication;
+export default useConfirmByPerformerDeal;

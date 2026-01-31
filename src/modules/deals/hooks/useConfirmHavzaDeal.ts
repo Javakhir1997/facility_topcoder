@@ -19,8 +19,8 @@ const UseConfirmByHavzaApplication = () => {
 
     // const navigate = useNavigate();
 
-    const {isPending: isConfirmPending, mutate: confirmByHavzaApplication} = useMutation({
-        mutationFn: (data: boolean) => apiClient.put(`${API_ENDPOINTS.APPLICATION_CONFIRM_BY_HAVZA}/${id}`, {
+    const {isPending: isConfirmPending, mutate: confirmByHavzaDeal} = useMutation({
+        mutationFn: (data: boolean) => apiClient.put(`${API_ENDPOINTS.DEAL_CONFIRM_BY_HAVZA}/${id}`, {
             evaluation_confirmation_documents: data
         }),
         onSuccess: () => {
@@ -33,7 +33,7 @@ const UseConfirmByHavzaApplication = () => {
         }
     })
 
-    return {isConfirmPending, confirmByHavzaApplication, form}
+    return {isConfirmPending, confirmByHavzaDeal, form}
 };
 
 export default UseConfirmByHavzaApplication;

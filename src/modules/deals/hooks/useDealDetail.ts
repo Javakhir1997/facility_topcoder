@@ -7,7 +7,7 @@ export default function Index(enabled: boolean = true) {
     console.log(id,'id ekan ')
     const {isPending, data} = useQuery({
             queryKey: ['deal-detail', id],
-            queryFn: () => DealService.getAnnouncement(id),
+            queryFn: () => DealService.getDeal(id),
             enabled: !!id && enabled
         }
     )

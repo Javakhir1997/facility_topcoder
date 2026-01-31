@@ -13,7 +13,7 @@ export default function Index() {
 
 	const {isPending, data} = useQuery({
 			queryKey: ['tenders', page, pageSize, status],
-			queryFn: () => TenderService.getAnnouncements(
+			queryFn: () => TenderService.getTenders(
 				{
 					page: String(page),
 					pageSize: String(pageSize),

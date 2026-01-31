@@ -1,3 +1,8 @@
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Column } from 'react-table'
+
 import {
     Button,
     PageLayout,
@@ -9,16 +14,9 @@ import {
 } from '@app/components'
 import { convertDateFormat, ROLE_LIST, statusTabOptions } from '@app/shared'
 import { Add } from '@app/assets'
-import { Column } from 'react-table'
-import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-// import { AppealListFilter } from '@modules/applications/components' // Agar filterlar deal uchun mos bo'lmasa o'chirib turing
-// import { useDeals } from '@modules/deals/hooks' // Hook nomini o'zgartirish kerak bo'lishi mumkin
-import { useDeals } from '@modules/deals/hooks' // Hozircha eskisi turibdi, lekin buni yangisiga almashtirish kerak
-import { useNavigate } from 'react-router-dom'
-import { useAppContext } from '@app/hooks'
+import { useDeals } from '@modules/deals/hooks'
 
-// 1. JSON ga mos yangi interfeys (interface.ts ga olib o'tsangiz ham bo'ladi)
+// --- Interfaces ---
 export interface IDeal {
     id: number;
     status: string;
@@ -29,26 +27,44 @@ export interface IDeal {
     docx_attachment: string | null;
 }
 
+// --- Sub-components ---
+
+// Hujjat Badge komponenti
+const DocumentBadge = ({ url, type }: { url: string | null, type: 'pdf' | 'docx' }) => {
+    if (!url) return null;
+
+    const styles = {
+        pdf: "text-red-600 bg-red-50 border-red-200 hover:bg-red-100",
+        docx: "text-blue-600 bg-blue-50 border-blue-200 hover:bg-blue-100"
+    };
+
+    return (
+        <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`px-2 py-1 rounded border text-xs font-bold transition-colors uppercase ${styles[type]}`}
+            onClick={(e) => e.stopPropagation()} 
+        >
+            {type}
+        </a>
+    );
+};
+
 const Index = () => {
     const { t } = useTranslation()
-    // DIQQAT: useAppeals o'rniga useDeals yoki shunga o'xshash, yangi JSON ni qaytaradigan hook ishlatilishi kerak
-    // Hozircha o'zgaruvchi nomlarini "deals" deb oldim
-    const { deals, isPending, total, totalPages, currentPage } = useDeals() 
-    console.log(deals,'ssdsdsdsdd')
-    
     const navigate = useNavigate()
-    const { user } = useAppContext()
+    
+    // Ma'lumotlarni olish
+    const { deals, isPending, total, totalPages, currentPage } = useDeals()
 
+    // Ustunlar konfiguratsiyasi
     const columns: Column<IDeal>[] = useMemo(
         () => [
             {
-                Header: t('ID'),
-                accessor: 'id',
-                width: 50,
-            },
-            {
-                Header: t('Application ID'), // Ariza raqami
+                Header: t('Application ID'),
                 accessor: 'application',
+                Cell: ({ value }) => <span className="text-gray-600"> {value}</span>
             },
             {
                 Header: t('Start Date'),
@@ -60,51 +76,42 @@ const Index = () => {
             },
             {
                 Header: t('Status'),
-                accessor: (row) => (<Status status={row.status} />)
+                accessor: 'status',
+                Cell: ({ value }) => <Status status={value} />
             },
             {
-                Header: t('Documents'), // Hujjatlar
-                Cell: ({ row }) => (
-                    <div className="flex gap-2">
-                        {row.original.pdf_attachment && (
-                            <a 
-                                href={row.original.pdf_attachment} 
-                                target="_blank" 
-                                rel="noreferrer"
-                                className="text-red-600 hover:underline font-medium text-sm"
-                                onClick={(e) => e.stopPropagation()} // Qator bosilishini to'xtatish uchun
-                            >
-                                PDF
-                            </a>
-                        )}
-                        {row.original.docx_attachment && (
-                            <a 
-                                href={row.original.docx_attachment} 
-                                target="_blank" 
-                                rel="noreferrer"
-                                className="text-blue-600 hover:underline font-medium text-sm"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                DOCX
-                            </a>
-                        )}
-                        {!row.original.pdf_attachment && !row.original.docx_attachment && (
-                            <span className="text-gray-400 text-sm">-</span>
-                        )}
-                    </div>
-                )
+                Header: t('Documents'),
+                accessor: 'id', // Accessor qolaveradi
+                id: 'documents', // <--- 1. MUHIM: Unikal ID berildi (Duplicate error yechimi)
+                disableSortBy: true,
+                Cell: ({ row }) => {
+                    const { pdf_attachment, docx_attachment } = row.original;
+                    
+                    // <--- 2. MUHIM: Markazlash uchun klasslar (justify-center items-center)
+                    return (
+                        <div className="flex items-center justify-center gap-2 h-full w-full">
+                            {!pdf_attachment && !docx_attachment ? (
+                                <span className="text-gray-400 text-sm">-</span>
+                            ) : (
+                                <>
+                                    <DocumentBadge url={pdf_attachment} type="pdf" />
+                                    <DocumentBadge url={docx_attachment} type="docx" />
+                                </>
+                            )}
+                        </div>
+                    );
+                }
             }
         ], [t]
     )
 
-    const handleRow = (id: string | number): void => {
-        // Bu yerni o'zingizning yangi route ga moslang (masalan: /deals/3)
-        navigate(`/deals/${id}`) 
+    const handleRowClick = (id: number) => {
+        navigate(`/deals/${id}`)
     }
 
     return (
         <PageLayout>
-            <PageTitle title={t("Deals")}> {/* "Bitimlar" yoki mos nom */}
+            <PageTitle title={t("Deals")}>
                 <Restricted permittedRole={ROLE_LIST.APPLICANT}>
                     <Button
                         icon={<Add />}
@@ -115,20 +122,18 @@ const Index = () => {
                 </Restricted>
             </PageTitle>
             
-            {/* Agar filtrlar kerak bo'lsa qoldiring, bo'lmasa o'chiring */}
-            {/* <AppealListFilter /> */} 
-            
             <Tab tabs={statusTabOptions} query="status" fallbackValue="all" />
-            
+
             <Table
-                total={total}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                isLoading={isPending}
+                data={deals || []}
                 columns={columns}
-                handleRow={handleRow}
-                data={deals || []} // Agar data undefined bo'lsa bo'sh massiv
+                isLoading={isPending}
+                total={total}
+                totalPages={totalPages}
+                currentPage={currentPage}
+                handleRow={handleRowClick}
                 screen={true}
+                emptyMessage={t("No deals found")}
             />
         </PageLayout>
     )

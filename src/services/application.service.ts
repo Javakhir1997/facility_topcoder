@@ -234,9 +234,47 @@ export const ApplicationService = {
 		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-by-ministry-dxsh-and-departments/${id}`, data)
 		return res.data
 	},
+	async confirmVazDxshConception(id: number, data: ConfirmConceptionDTO) {
+		// const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-by-ministry-dxsh-and-departments/${id}`, data)
+		console.log(res, data,'vazdxshconfirm')
+		return res.data
+	},
 
+	
+
+	async confirmFinanceMinistryConception(id: number, data: ConfirmConceptionDTO) {
+		// const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-by-ministry-dxsh-and-departments/${id}`, data)
+		console.log(res, data,'vazdxshconfirm')
+		return res.data
+	},
+
+	
+	
+
+	async confirmMinistryHeadConception(id: number, data: ConfirmConceptionDTO) {
+		// const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+		const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-by-ministry-dxsh-and-departments/${id}`, data)
+		console.log(res, data,'vazdxshconfirm')
+		return res.data
+	},
 	async attachPerformerToConception(id: number, data: AttachPerformerDTO) {
 		const res = await interceptor.put<IConceptionDetail>(`application/concept/attach-performer-to-concept/${id}`, data)
 		return res.data
 	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 }

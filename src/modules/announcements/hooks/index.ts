@@ -1,5 +1,7 @@
 export {default as useAnnouncements} from "./useAnnouncement"
+export {default as useAnnouncementUpdateConfirm} from "./useAnnouncementUpdateConfirm"
 export {default as useAddAppeal} from "./useAddAppeal"
+export {default as useAnnouncementDetail} from "./useAnnouncementDetail"
 export {default as useAppealDetail} from "./useAppealDetail"
 export {default as useReply} from "./useReply"
 export {default as useReturn} from "./useReturn"

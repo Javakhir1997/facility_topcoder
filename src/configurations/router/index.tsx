@@ -39,6 +39,15 @@ import {
   FinansPlansList,
   FinansPlansDetails,
   AddFinansPlansDetails,
+  TenderDetail,
+  WinnerTenderDetail,
+  AttachPerformerDeal,
+  AttachCondeRegisterDeal,
+  RejectDeal,
+  RejectApplicantDeal,
+  RejectMinistryDeal,
+  RejectVazDxshDeal,
+  RejectMasulBolimDxsh
 } from "@app/modules";
 import { AddConcept } from "@modules/applicationsOld";
 
@@ -231,14 +240,24 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <TenderApplicantList />,
+                element: <TenderDetail />,
               },
+              {
+                path: "winnerCreate",
+                children: [
+                  {
+                    index: true,
+                    element: <TenderApplicantList />,
+                  },
+                ],
+              },
+
               {
                 path: "get-participant",
                 children: [
                   {
                     index: true,
-                    element: <WinnerDealFileViewer />,
+                    element: <WinnerTenderDetail />,
                   },
                 ],
               },
@@ -283,16 +302,61 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <RejectConception />,
+                    element: <RejectDeal />,
                   },
                 ],
+              },
+              {
+                path:"reject_applicant",
+                children:[
+                  {
+                    index:true,
+                    element: <RejectApplicantDeal/>
+                  }
+                ]
+              },
+              {
+                path:"reject-ministry",
+                children:[
+                  {
+                    index:true,
+                    element: <RejectMinistryDeal/>
+                  }
+                ]
+              },
+              {
+                path:"reject-vazdxsh",
+                children:[
+                  {
+                    index:true,
+                    element: <RejectVazDxshDeal/>
+                  }
+                ]
+              },
+              {
+                path:"reject-masulbolimdxsh",
+                children:[
+                  {
+                    index:true,
+                    element: <RejectMasulBolimDxsh/>
+                  }
+                ]
               },
               {
                 path: "attach-performer",
                 children: [
                   {
                     index: true,
-                    element: <AttachPerformer />,
+                    element: <AttachPerformerDeal />,
+                  },
+                ],
+              },
+              {
+                path: "attach-code-register",
+                children: [
+                  {
+                    index: true,
+                    element: <AttachCondeRegisterDeal />,
                   },
                 ],
               },

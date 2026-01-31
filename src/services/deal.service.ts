@@ -4,6 +4,8 @@ import {
   IAnnouncementForm,
   IAnnouncementList,
   IAttachmentResponse,
+  IConceptionDetail,
+  IDealDetail,
   IListResponse,
   IOperatorReturnAnnouncementForm,
   IReplyAnnouncementForm,
@@ -11,9 +13,10 @@ import {
   ISearchParams,
   IWinnerAddForm,
 } from "@app/interfaces";
+import { AttachPerformerDealDTO, AttachPerformerDTO, ConfirmDealDTO } from "@entities/deal";
 
 export const DealService = {
-  async getAnnouncements(queryParams: ISearchParams) {
+  async getDeals(queryParams: ISearchParams) {
     let endpoint = "/deal/list/";
 
     const res = await interceptor<IListResponse<IAnnouncementList>>(endpoint, {
@@ -23,7 +26,7 @@ export const DealService = {
     return res.data;
   },
 
-  async getAnnouncement(id: number | string) {
+  async getDeal(id: number | string) {
     const res = await interceptor<any>(`/deal/${id}/detail/`);
     console.log(res.data, "vacacaget deal keldi");
     return res.data;
@@ -159,5 +162,80 @@ export const DealService = {
     // URL: appeal/operator
     const res = await interceptor.post(`tender/operator/returned`, newData);
     return res.data;
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  async sendToMinistryDeal(id: number) {
+    // const res = await interceptor.put<IConceptionDetail>(`application/send-concept-to-ministry-dxsh/${id}`)
+    const res = await interceptor.patch<IConceptionDetail>(`application/concept/evaluation-confirm-concept-by-performer/${id}`)
+    return res.data
+  },
+
+  async evolutionDeal(id: number, data: ConfirmConceptionDTO) {
+    const res = await interceptor.put<IConceptionDetail>(`application/concept/evaluation-by-region-dxsh-or-balans/${id}`, data)
+    return res.data
+  },
+
+  async evolutionDealConfirmBolimXodim(id: number, data: ConfirmDealDTO) {
+    const res = await interceptor.patch<IConceptionDetail>(`deal/evaluation-deal/${id}`, data)
+    return res.data
+  },
+  async confirmVazDxshDeal(id: number, data: ConfirmDealDTO) {
+    // const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+    const res = await interceptor.patch<IDealDetail>(`deal/evaluation-deal-by-vaz-dxsh/${id}`, data)
+    console.log(res, data, 'vazdxshconfirm')
+    return res.data
+  },
+
+
+
+  async confirmFinanceMinistryDeal(id: number, data: ConfirmDealDTO) {
+    // const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+    const res = await interceptor.patch<IConceptionDetail>(`deal/evaluation-deal-by-finance-ministry/${id}`, data)
+    console.log(res, data, 'vazdxshconfirm')
+    return res.data
+  },
+
+  async confirmApplicantDeal(id: number, data: ConfirmDealDTO) {
+    // const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+    const res = await interceptor.patch<IConceptionDetail>(`deal/evaluation-deal-by-entrepreneur/${id}`, data)
+    console.log(res, data, 'vazdxshconfirm')
+    return res.data
+  },
+
+
+
+
+  async confirmMinistryHeadDeal(id: number, data: ConfirmDealDTO) {
+    // const res = await interceptor.put<IConceptionDetail>(`application/send-region-dxsh/${id}`, data)
+    const res = await interceptor.patch<IConceptionDetail>(`deal/evaluation-deal-by-ministry/${id}`, data)
+    console.log(res, data, 'vazdxshconfirm')
+    return res.data
+  },
+
+  async attachRegisterCodeHeadDeal(id: number, data: any) {
+    const res = await interceptor.put<IConceptionDetail>(`deal/attach-register-code/${id}`, data)
+    console.log(res.data), 'fdfdfdfdfdfd';
+    return res.data
+  },
+
+
+  async attachPerformerToDeal(id: number, data: AttachPerformerDealDTO) {
+    const res = await interceptor.put<IConceptionDetail>(`deal/attach-performers/${id}`, data)
+    console.log(res.data), 'fdfdfdfdfdfd';
+    return res.data
   },
 };

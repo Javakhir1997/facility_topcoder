@@ -5,8 +5,10 @@ import {
     useEvolutionConception,
     useConfirmConception,
     useSendToMinistryConception,
-    useConfirmBolimXodimConception
-
+    useConfirmBolimXodimConception,
+    useConfirmConceptionVazDxsh,
+    useConfirmConceptionFinanceMinistry,
+    useConfirmMinistryHeadConception
 } from "@modules/conception/hooks";
 import { Column } from "react-table";
 import {
@@ -27,12 +29,25 @@ const Index = () => {
     const { data, isPending } = useConceptionDetail()
 
     const { t } = useTranslation()
-const [performerRejectText, setPerformerRejectText] = useState('')
+    const [performerRejectText, setPerformerRejectText] = useState('')
     const navigate = useNavigate();
 
     const { confirmConception, isPending: isRegionDxshLoading } = useConfirmConception();
 
+
+    const { confirmFinanceMinistryConception } = useConfirmConceptionFinanceMinistry();
+
+
+
+
     const { evolutionConception, isPending: isEvolutionLoading } = useEvolutionConception();
+
+
+
+    const { confirmMinistryHeadConception } = useConfirmMinistryHeadConception();
+
+
+    const { confirmVazDxshConception } = useConfirmConceptionVazDxsh();
     const { confirmBolimXodimConception } = useConfirmBolimXodimConception();
     const { sendToMinistry, isPending: isMinistryLoading } = useSendToMinistryConception()
     const [confirmedByPerformers, setConfirmedByPerformers] = useState<boolean>();
@@ -61,6 +76,10 @@ const [performerRejectText, setPerformerRejectText] = useState('')
             {
                 Header: t('status'),
                 accessor: row => (<Status status={row.status} />)
+            },
+            {
+                Header: t('role'),
+                accessor: row => row.performer.role
             },
             {
                 Header: t('evalution_status'),
@@ -221,7 +240,7 @@ const [performerRejectText, setPerformerRejectText] = useState('')
                                 <Table
                                     isLoading={isPending}
                                     columns={columns}
-                                    data={data.performers}
+                                    data={data?.performers}
                                     screen={true}
                                     pagination={false}
                                 />
@@ -338,7 +357,7 @@ const [performerRejectText, setPerformerRejectText] = useState('')
                         <Restricted permittedRole={[ROLE_LIST.MINISTRY_DXSH_B_B]}>
                             <ShowIf
                                 show={
-                                    data?.status === STATUS_LIST.IN_PROCES
+                                    data?.performer.status === STATUS_LIST.IN_PROCES
                                 }
                             >
                                 <Button
@@ -352,6 +371,62 @@ const [performerRejectText, setPerformerRejectText] = useState('')
                                 <Button
                                     theme={BUTTON_THEME.PRIMARY}
                                     onClick={() => navigate('attach-performer')}
+                                >
+                                    Xodimga yuborish
+                                </Button>
+                                <Button
+                                    theme={BUTTON_THEME.PRIMARY}
+                                    onClick={() => confirmVazDxshConception({ reject: false })}
+                                >
+                                    Confirm
+                                </Button>
+
+
+                            </ShowIf>
+                        </Restricted>
+                        <Restricted permittedRole={[ROLE_LIST.MINISTRY_FINANCE]}>
+                            <ShowIf
+                                show={
+                                    data?.performer.status === STATUS_LIST.IN_PROCES
+                                }
+                            >
+                                <Button
+                                    className={'mr-2'}
+                                    theme={BUTTON_THEME.DANGER_OUTLINE}
+                                    onClick={() => navigate('reject')}
+                                >
+                                    Return
+                                </Button>
+
+                                <Button
+                                    theme={BUTTON_THEME.PRIMARY}
+                                    onClick={() => confirmFinanceMinistryConception({ reject: false })}
+                                    disabled={isEvolutionLoading}
+                                >
+                                    Confirm
+                                </Button>
+
+
+                            </ShowIf>
+                        </Restricted>
+                        <Restricted permittedRole={[ROLE_LIST.MINISTRY]}>
+                            <ShowIf
+                                show={
+                                    data?.performer.status === STATUS_LIST.IN_PROCES
+                                }
+                            >
+                                <Button
+                                    className={'mr-2'}
+                                    theme={BUTTON_THEME.DANGER_OUTLINE}
+                                    onClick={() => navigate('reject')}
+                                >
+                                    Return
+                                </Button>
+
+                                <Button
+                                    theme={BUTTON_THEME.PRIMARY}
+                                    onClick={() => confirmMinistryHeadConception({ reject: false })}
+                                    disabled={isEvolutionLoading}
                                 >
                                     Confirm
                                 </Button>

@@ -16,7 +16,7 @@ import {
 
 export const TenderService = {
   // getAppeals -> getAnnouncements (lekin appeal endpointga uradi)
-  async getAnnouncements(
+  async getTenders(
     queryParams: ISearchParams,
     isOperator: boolean = false,
     isDirector: boolean = false

@@ -21,7 +21,7 @@ const UseRejectByPerformerApplication = () => {
     const navigate = useNavigate();
 
 
-    const {isPending: isRejectPending, mutate: rejectByPerformerApplication} = useMutation({
+    const {isPending: isRejectPending, mutate: rejectByPerformerDeal} = useMutation({
         mutationFn: (data: RejectByPerformerApplicationDTO) => apiClient.patch(`${API_ENDPOINTS.APPLICATION_REJECT_BY_PERFORMER}/${id}`, data),
         onSuccess: () => {
             showMessage("Successfully", "success")
@@ -30,7 +30,7 @@ const UseRejectByPerformerApplication = () => {
         }
     })
 
-    return {form, rejectByPerformerApplication, isRejectPending}
+    return {form, rejectByPerformerDeal, isRejectPending}
 };
 
 export default UseRejectByPerformerApplication;
