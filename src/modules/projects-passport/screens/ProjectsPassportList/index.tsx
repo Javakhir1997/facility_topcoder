@@ -5,7 +5,7 @@ import { arrayToString, showMessage } from "@shared/utilities";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Column } from "react-table";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Add, Document } from "@assets/icons";
 import FilterInProjectPassport from "@modules/projects-passport/components/Filter";
 import usePassportList from "@modules/projects-passport/hooks/useProjectsPassport";
@@ -43,7 +43,7 @@ interface ProjectPassportList {
 export default function Index() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
+  const [isDownloading, setIsDownloading] = useState(false);
   const [filters, setFilters] = useState<{
     [key: string]: string | string[] | number;
   }>({});
@@ -57,6 +57,7 @@ export default function Index() {
     onPageChange,
     onPageSizeChange,
   } = usePassportList(filters);
+
   function handleFilter({
     name,
     value,
@@ -64,11 +65,11 @@ export default function Index() {
     name: string;
     value: string | string[] | number;
   }) {
-
     setFilters((prev) => ({ ...prev, [name]: value }));
     onPageChange(1);
     onPageSizeChange(5);
   }
+
   const columns: Column<ProjectPassport>[] = useMemo(
     () => [
       {
@@ -78,10 +79,6 @@ export default function Index() {
       {
         Header: t("Name of the area"),
         accessor: (row) => arrayToString(row.districts),
-      },
-      {
-        Header: t("owner_organization"),
-        accessor: (row) => row.owner_organization,
       },
       {
         Header: t("Short name of the project"),
@@ -118,23 +115,26 @@ export default function Index() {
         ),
       },
     ],
-    [t]
+    [t],
   );
+
   function handleRow(id: string | number): void {
-    navigate(`/projects-passport/${id}`);
+    navigate(`/projects/${id}`);
   }
+
   const mappedData = useMemo(() => {
     if (!projectsPassport?.results) return [];
+
     return projectsPassport.results.map((item: ProjectPassportList) => ({
       ...item,
       ...item,
       region: item.region.name,
       districts: item.districts.map((d) => d.name),
-      owner_organization: item.owner_organization.name,
+      // owner_organization: item.owner_organization.name,
       object: item.object.map((o) => o.name),
     }));
   }, [projectsPassport?.results]);
-  const [isDownloading, setIsDownloading] = useState(false);
+  
 
   async function handleExcel() {
     setIsDownloading(true);
@@ -144,7 +144,7 @@ export default function Index() {
         `https://dxsh.technocorp.uz/api/report/project-get-excel?${queryString}`,
         {
           responseType: "blob",
-        }
+        },
       );
 
       const blob = new Blob([response.data], {
@@ -166,22 +166,27 @@ export default function Index() {
 
   return (
     <PageLayout>
-      <PageTitle title="Projects Passport">
-        <Button icon={<Add />} navigate="add">
-          Create project
-        </Button>
-      </PageTitle>
-      <FilterInProjectPassport handleFilter={handleFilter} />
-      <div style={{ display: "flex", justifyContent: "end" }}>
-        <Button
-          theme={BUTTON_THEME.GREEN}
-          icon={<Document />}
-          disabled={isDownloading}
-          onClick={handleExcel}
-        >
-          {isDownloading ? t("Downloading...") : t("Export to excel")}
-        </Button>
+      <div className="bg-white px-3 rounded-2xl pb-2 flex flex-col gap-3">
+        <PageTitle title="Projects Passport">
+          <div style={{ display: "flex", justifyContent: "end", gap: "12px" }}>
+            <Button icon={<Add />} navigate="add">
+              Create project
+            </Button>
+
+            <Button
+              theme={BUTTON_THEME.GREEN}
+              icon={<Document />}
+              disabled={isDownloading}
+              onClick={handleExcel}
+            >
+              {isDownloading ? t("Downloading...") : t("Export to excel")}
+            </Button>
+          </div>
+        </PageTitle>
+
+        <FilterInProjectPassport handleFilter={handleFilter} />
       </div>
+
       <Table
         total={total}
         currentPage={currentPage}

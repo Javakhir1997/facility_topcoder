@@ -9,3 +9,4 @@ export { default as Applications } from "./Applications";
 export { default as Finans } from "./Finans";
 export { default as Deed } from "./Deed";
 export { default as ApplicationsForm } from "./ApplicationsForm";
+export {default as Projects} from "./Projects";

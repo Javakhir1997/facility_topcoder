@@ -1,8 +1,9 @@
-import classes from "./styles.module.scss";
-import { TableOptions, useTable } from "react-table";
 import classNames from "classnames";
 import { Loader } from "@app/components";
 import { useTranslation } from "react-i18next";
+import { TableOptions, useTable } from "react-table";
+
+import classes from "./styles.module.scss";
 
 const Index = <T extends object & { id: string }>({
   columns,
@@ -38,25 +39,32 @@ const Index = <T extends object & { id: string }>({
     >
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup, index) => (
-            <tr
-              {...headerGroup.getHeaderGroupProps()}
-              className={classes.row}
-              key={index}
-            >
-              {headerGroup.headers.map((column, index) => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{ ...column.style }}
-                  rowSpan={column.headerRowSpan}
-                  key={index}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
+          {headerGroups.map((headerGroup) => {
+            const { key: groupKey, ...groupProps } =
+              headerGroup.getHeaderGroupProps();
+
+            return (
+              <tr key={groupKey} {...groupProps} className={classes.row}>
+                {headerGroup.headers.map((column) => {
+                  const { key: headerKey, ...headerProps } =
+                    column.getHeaderProps();
+
+                  return (
+                    <th
+                      key={headerKey}
+                      {...headerProps}
+                      style={{ ...column.style }}
+                      rowSpan={column.headerRowSpan}
+                    >
+                      <>{column.render("Header")}</>
+                    </th>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </thead>
+
         <tbody {...getTableBodyProps()}>
           {isLoading ? (
             <tr>
@@ -73,23 +81,30 @@ const Index = <T extends object & { id: string }>({
                       <td colSpan={columns.length}></td>
                     </tr>
                   )}
-                  {rows.map((row, index) => {
+
+                  {rows.map((row) => {
                     prepareRow(row);
+
+                    const { key: rowKey, ...rowProps } = row.getRowProps();
+
                     return (
                       <tr
-                        onClick={() => handleRow?.(row.original.id)}
+                        key={rowKey}
+                        {...rowProps}
                         className={classes.row}
-                        {...row.getRowProps()}
-                        key={index}
+                        onClick={() => handleRow?.(row.original.id)}
                       >
-                        {row.cells.map((cell, index) => {
+                        {row.cells.map((cell) => {
+                          const { key: cellKey, ...cellProps } =
+                            cell.getCellProps();
+
                           return (
                             <td
-                              {...cell.getCellProps([])}
+                              key={cellKey}
+                              {...cellProps}
                               style={{ ...cell.column.style }}
-                              key={index}
                             >
-                              {cell.render("Cell")}
+                              <>{cell.render("Cell")}</>
                             </td>
                           );
                         })}

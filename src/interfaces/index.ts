@@ -1,8 +1,8 @@
 export * from "./authentication.interface";
 export * from "./application.interface";
-export * from "./announcement.interface"; // Announcement barcha turlari (ExampleData, IPerformer va h.k.)
+export *  from "./announcement.interface"; // Announcement barcha turlari (ExampleData, IPerformer va h.k.)
 export * from "./configuration.interface";
-export * from "./deal.interface"
+
 // Appeal faylidan faqatgina nomlari to'qnashmaydiganlarini aniq ko'rsatib eksport qilamiz
 export type {
   IAppealList,

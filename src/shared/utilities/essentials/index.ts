@@ -92,14 +92,28 @@ function extractValues(files?: ISelectOption[] | null): (string | number)[] {
 }
 
 function convertDateFormat(dateTime: string | null | undefined): string | null {
-  if (!dateTime) {
-    return null;
+  if (!dateTime) return null;
+
+  if (dateTime.includes("T")) {
+    const date = new Date(dateTime);
+    if (isNaN(date.getTime())) return null;
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
-  const [date, time] = dateTime.split(" ");
-  const [day, month, year] = date.split("-");
-  if (!day || !month || !year || !time) {
-    return null;
-  }
+
+  const parts = dateTime.split(" ");
+  const [day, month, year] = parts[0].split("-");
+
+  if (!day || !month || !year) return null;
+
+  const time = parts[1] ?? "00:00";
+
   return `${day}.${month}.${year} ${time}`;
 }
 
