@@ -20,3 +20,4 @@ export {default as useRejectApplicantDeal} from "./useRejectApplicantDeal"
 export {default as useRejectMinistryDeal} from "./useRejectMinistryDeal"
 export {default as useRejectVazDxshDeal} from './useRejectVazDxshDeal';
 export {default as useRejectMasulBolimDxshDeal} from './useConfirmMasulBolimXodimDeal'
+export {default as useUploadDealFiles} from './useUploadDealFiles'

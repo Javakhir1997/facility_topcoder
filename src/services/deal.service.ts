@@ -238,4 +238,11 @@ export const DealService = {
     console.log(res.data), 'fdfdfdfdfdfd';
     return res.data
   },
+
+
+  async upload_file_for_deal(id: any, data: any) {
+    const res = await interceptor.put<IConceptionDetail>(`deal/${id}/files/upload/`, data)
+    console.log(res.data), 'fdfdfdfdfdfd';
+    return res.data
+  }
 };

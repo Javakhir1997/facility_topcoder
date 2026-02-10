@@ -20,6 +20,8 @@ export const API_ENDPOINTS: Record<string, string> = {
     DEAL_REJECT_APPLICANT_DXSH: 'deal/evaluation-deal-by-entrepreneur',
     DEAL_REJECT_MINISTRY:'deal/evaluation-deal-by-ministry',
     DEAL_REJECT_VAZ_DXSH:'deal/evaluation-deal-by-vaz-dxsh',
-    DEAL_REJECT_MASULBOLIMDXSH_DXSH:'deal/evaluation-deal'
+    DEAL_REJECT_MASULBOLIMDXSH_DXSH:'deal/evaluation-deal',
 
+
+    FILE_UPLOAD_FOR_DEAL: ''
 }

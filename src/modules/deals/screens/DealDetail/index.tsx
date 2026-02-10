@@ -27,10 +27,14 @@ import {
 	useConfirmFinanceMinistryDeal,
 	useConfirmApplicantDeal,
 	useConfirmMinistryHeadDeal,
+	useUploadDealFiles,
 } from "@modules/deals/hooks";
 
 import { IPerformer } from '@interfaces/appeal.interface'
 import { Column } from 'react-table'
+import MultiFileUploader from './DynamicFileUploader'
+import DynamicFileUploader from './DynamicFileUploader'
+import { Form } from '@shared/component/ui/form'
 
 // AGAR SIZDA BASE URL BO'LSA SHU YERGA YOZING, AKS HOLDA BO'SH QOLDIRING
 const BASE_URL = "";
@@ -51,6 +55,19 @@ const Index = () => {
 
 	// MODAL UCHUN STATE
 	const [performerRejectText, setPerformerRejectText] = useState('')
+
+
+	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+	const handleConfirmWithFiles = () => {
+		const formData = new FormData();
+		selectedFiles.forEach((file, index) => {
+			formData.append(`attachments[${index}]`, file);
+		});
+
+		// Hook orqali yuborish (misol)
+		// confirmVazDxshDeal({ files: formData, reject: false });
+	};
 
 	// Faylni ochish uchun yordamchi funksiya (Headerdagi fayllar uchun)
 	const handleOpenFile = (url: string | undefined) => {
@@ -208,14 +225,47 @@ const Index = () => {
 		return { id: "deal_docx_id", name: fileName, url: data.docx_attachment, size: 0, ext: "docx", type: "docx" };
 	}, [data?.docx_attachment]);
 
+	// const formattedDealFiles = useMemo(() => {
+	// 	if (!data?.deal_files || !data.deal_files.length) return [];
+	// 	return data.deal_files.map((fileUrl: string, index: number) => {
+	// 		const fileName = fileUrl.split('/').pop() || `file_${index}`;
+	// 		const extension = fileName.split('.').pop() || "file";
+	// 		return { id: `deal_file_${index}`, name: fileName, url: fileUrl, size: 0, ext: extension, type: extension }
+	// 	})
+	// }, [data?.deal_files]);
+
 	const formattedDealFiles = useMemo(() => {
-		if (!data?.deal_files || !data.deal_files.length) return [];
-		return data.deal_files.map((fileUrl: string, index: number) => {
-			const fileName = fileUrl.split('/').pop() || `file_${index}`;
-			const extension = fileName.split('.').pop() || "file";
-			return { id: `deal_file_${index}`, name: fileName, url: fileUrl, size: 0, ext: extension, type: extension }
-		})
-	}, [data?.deal_files]);
+    // 1. Agar deal_files bo'sh bo'lsa yoki massiv bo'lmasa to'xtatamiz
+    if (!data?.deal_files || !Array.isArray(data.deal_files)) return [];
+
+    return data.deal_files.map((fileItem: any, index: number) => {
+        // 2. fileUrl ni aniqlab olamiz. 
+        // Agar fileItem string bo'lsa o'zi, agar obyekt bo'lsa uning .file yoki .url maydoni
+        const fileUrl = typeof fileItem === 'string' ? fileItem : (fileItem?.file || fileItem?.url || "");
+
+        // 3. Agar fileUrl bo'sh bo'lsa, xatolik bermasligi uchun default qiymat beramiz
+        if (!fileUrl || typeof fileUrl !== 'string') {
+            return { id: `deal_file_${index}`, name: `unknown_file_${index}`, url: "", size: 0, ext: "", type: "" };
+        }
+
+        const fileName = fileUrl.split('/').pop() || `file_${index}`;
+        const extension = fileName.split('.').pop() || "file";
+
+        return { 
+            id: `deal_file_${index}`, 
+            name: fileName, 
+            url: fileUrl, 
+            size: 0, 
+            ext: extension, 
+            type: extension 
+        };
+    });
+}, [data?.deal_files]);
+
+
+
+
+	const { form, uploadFilesDeal, isUploadPending } = useUploadDealFiles();
 
 	return (
 		<PageLayout>
@@ -264,7 +314,28 @@ const Index = () => {
 					</div>
 				</div>
 
+
 				<HR />
+
+				<Form {...form}>
+                    <form onSubmit={uploadFilesDeal}>
+                        <div className="mt-8 border-t pt-6">
+                            <DynamicFileUploader 
+                                form={form} 
+                                name="deal_files" 
+                            />
+                        </div>
+
+                        <div className="mt-6 flex justify-end">
+                            <Button 
+                                type="submit" 
+                                loading={isUploadPending}
+                            >
+                                Saqlash
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
 
 				{/* --- 2. HUJJATLAR (DOCUMENTS) --- */}
 				<Tag title="Deal Documents" type="vertical">
